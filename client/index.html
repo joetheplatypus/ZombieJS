@@ -1,0 +1,344 @@
+<head>
+</head>
+<body style="margin:0;">
+<div id="signDiv">
+	<form action="javascript:void(0);">
+	<p>Username: </p><input id="signDiv-username" type="text" autocomplete="off" autofocus></input>
+	<p id="loginMessage" style="font-size:15px;color:red;"></p>
+	<button id="signDiv-join">JOIN</button>
+	</form>
+</div>
+
+<div id="lobbyDiv" style="display:none;">
+	<h1>In Lobby</h1>
+	<h3 id="lobbyDivTimer"></h3>
+	<div id="lobbyDivPlayers"></div>
+</div>
+
+<div id="gameDiv" style="display:none;">
+	<canvas id="ctx" height="700" width="1400" style="background-color:lightgrey;position:absolute;z-index:0;cursor:default"></canvas>
+
+	<div id="timer" style="position:absolute;z-index:8;top:15px;min-width:80px; width:100%;text-align:center;opacity:0.9;color:white;font-family:Verdana;font-size:30px;user-select: none;cursor:default">
+		--:--
+	</div>
+
+	<div id="chat-text" style="width:430px;height:100px;overflow-y:scroll;position:absolute;bottom:20px;right:0px;z-index:10;background:white;padding:10px;opacity:0.8;word-wrap: break-word;user-select: none;cursor:default" onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true">
+		<div>Hello!</div>
+	</div>
+
+	<div id="inventory" style="position:absolute;z-index:10;top:0px;right:0px;padding:10px;min-width:80px;user-select: none;cursor:default " onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true"></div>
+	<div id="inventoryHitbox" style="position:absolute;z-index:9;top:0px;right:0px;width:500px;height:50px;" onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true"></div>
+	<div id="crafting" style="position:absolute;z-index:10;bottom:0px;left:0px;padding:10px;min-width:80px;user-select: none;cursor:default" onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true"></div>
+	<div id="craftHitbox" style="position:absolute;z-index:9;bottom:0px;left:0px;width:500px;height:50px;" onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true"></div>
+	<canvas id="minimap" style="position:absolute;z-index:9;bottom:0px;right:450px;opacity:0.5;color:white;font-family:Verdana;font-size:17px;user-select: none;cursor:default" height="140" width="140"></canvas> 
+	<div id="GUIboxes" style="position:absolute;z-index:8;text-align:center;opacity:0.9;color:white;font-family:Verdana;font-size:17px;user-select: none;cursor:default" onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true"></div>
+	<form id="chat-form" onmouseenter="ctxInteract = false" onmouseleave="ctxInteract = true" autocomplete="off">
+		<input id="chat-input" type="text" style="width:450px;position:absolute;z-index:10;bottom:0px;right:0px;"></input>
+	</form>
+</div>
+
+<link rel="stylesheet" href="/client/style.css">
+
+
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="module">
+	import Player from './client/js/Player.js'
+	import Game from './client/js/Helper.js'
+	import Tree from './client/js/Tree.js'
+	import Bush from './client/js/Bush.js'
+	import Rock from './client/js/Rock.js'
+	import Metal from './client/js/Metal.js'
+	import Projectile from './client/js/Projectile.js'
+	import Structure from './client/js/Structure.js'
+	import Inventory from './client/js/Inventory.js'
+	import ItemTile from './client/js/ItemTile.js'
+	import GUI from './client/js/GUI.js'
+	import GameObject from './client/js/GameObject.js'
+	import CopperOre from './client/js/CopperOre.js'
+	import IronOre from './client/js/IronOre.js'
+	import DOM from './client/js/DOM.js'
+
+	//DOM references
+
+	const chatText = document.getElementById("chat-text");
+	const chatInput = document.getElementById("chat-input");
+	const chatForm = document.getElementById("chat-form");
+	const uiInventory = document.getElementById("inventory");
+	const populationText = document.getElementById("population");
+	const usedPopulationText = document.getElementById("used-population");
+	const guiboxes = document.getElementById("GUIboxes");
+	const minimap = document.getElementById("minimap");
+	const canvas = document.getElementById("ctx");
+	const holdText = document.getElementById("holdingItem");
+
+	Game.ctx = canvas.getContext("2d");
+	Game.mapctx = minimap.getContext("2d");
+
+	//SETUP
+	const socket =  io();
+	Game.socket = socket
+
+	window.addEventListener('resize',resizeCanvas,false);
+	resizeCanvas();
+
+	function resizeCanvas() {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
+		Game.height = canvas.height;
+		Game.width = canvas.width;
+	}
+
+	ctx.font = "30px Arial";
+
+
+	
+	
+	//SIGNING IN
+	DOM.signDivJoin.onclick = function () {
+		const username = DOM.signDivUsername.value;
+		socket.emit('signIn', {username:DOM.signDivUsername.value});
+	}
+	
+	socket.on('signInResponse', function(data) {
+		if(data.success) {
+			DOM.signDiv.style.display = 'none';
+			DOM.lobbyDiv.style.display = 'inline-block';
+			Game.inLobby = true;
+		} else {
+			var box = document.getElementById("loginMessage");
+			box.innerHTML = "The username " + data.name + " is already taken";
+		}
+	});
+
+		
+	//CLASS MAP
+
+	const classMap = new Map();
+	classMap.set('Player', Player)
+	classMap.set('Tree', Tree)
+	classMap.set('Bush', Bush)
+	classMap.set('Rock', Rock)
+	classMap.set('Metal', Metal)
+	classMap.set('Projectile', Projectile)
+	classMap.set('Structure', Structure)
+	classMap.set('ItemTile', ItemTile)
+	classMap.set('CopperOre', CopperOre)
+	classMap.set('IronOre', IronOre)
+
+	//SOCKET PACKS
+
+	socket.on('lobbyPlayers', function(playerList) {
+		DOM.lobbyDivPlayers.innerHTML = '';
+		for(var i=0; i<playerList.length; i++) {
+			DOM.lobbyDivPlayers.innerHTML += `${playerList[i]} </br>`;
+		}
+	});
+
+	socket.on('lobbyTimer', function(data) {
+		DOM.lobbyDivTimer.innerHTML = data.sec
+	});
+
+	socket.on('startGame', function(data) {
+		DOM.lobbyDiv.style.display = 'none';
+		DOM.gameDiv.style.display = 'inline-block';
+		Game.inGame = true;
+		Game.inLobby = false;
+		requestAnimationFrame(loop)
+	});
+
+	socket.on('selfId',function(id) {
+		Player.selfId = id;
+		socket.id = Player.selfId;	
+	});
+
+	socket.on('inventory',function(data) {
+		Inventory.update(data)
+		Inventory.draw()
+	});
+
+	socket.on('placingStructure',function(structure) {
+		Game.placingStructure = structure;
+	});
+	
+	socket.on('init',function(data) {
+		for(var i=0; i<data.length; i++) {
+			const classToInstantiate = classMap.get(data[i].className);
+			if(!classToInstantiate.fromID(data[i].id)) {
+				new classToInstantiate(data[i])
+			}
+		}		
+	});
+	
+	socket.on('update',function(params) {
+
+		params.timeReceived = new Date().getTime();
+		Game.lastPacket = Game.thisPacket;
+		Game.thisPacket = params;
+		Game.deltaTime = Game.thisPacket.timeReceived - Game.lastPacket.timeReceived
+
+		for(var i=0; i<params.data.length; i++) {
+			const classToFind = classMap.get(params.data[i].className);
+			if(classToFind.fromID(params.data[i].id)) {
+				classToFind.fromID(params.data[i].id).update(params.data[i])
+			}
+		}	
+	});
+	
+	socket.on('remove', function(data) {
+		for(var i=0; i<data.length; i++) {
+			const classToFind = classMap.get(data[i].className);
+			if(GameObject.fromID(data[i].id)) {
+				GameObject.list.splice(GameObject.list.findIndex(x => x.id === data[i].id), 1)
+			}
+			if(data[i].id === Player.selfId) {
+				//
+			}
+		}
+	});
+
+	socket.on('timer', function(data) {
+		DOM.timer.innerHTML = `${data.min}:${data.sec}`
+	});
+	
+	
+	//update canvas
+	function loop (timestamp) {
+		if(!Player.selfId || !Game.inGame || Game.inLobby) {
+			return;
+		}
+		Game.ctx.clearRect (0,0,Game.width,Game.height);
+		Game.mapctx.clearRect (0,0,140,140);
+		Game.mapctx.fillStyle = "black";
+		Game.mapctx.fillRect(0,0,Game.minimapWidth,Game.minimapHeight);
+		Game.mapctx.fillStyle = "green";
+		
+		GameObject.drawAll();
+		GameObject.statUpdateAll();
+		
+
+		if(Game.placingStructure) {
+			var x = Game.input.mouseRealX - Player.fromID(Player.selfId).x + Game.width/2;
+			var y = Game.input.mouseRealY - Player.fromID(Player.selfId).y + Game.height/2;
+			const image = GUI.structureImages.get(Game.placingStructure)
+			Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
+		}
+
+		
+		requestAnimationFrame(loop);
+		
+	}
+	
+	// target the user's browser.
+	window.requestAnimationFrame = window.requestAnimationFrame
+		|| window.mozRequestAnimationFrame
+		|| window.webkitRequestAnimationFrame
+		|| window.msRequestAnimationFrame
+		|| function(f){return setTimeout(f, 1000/60)} // simulate calling code 60 
+	 
+	window.cancelAnimationFrame = window.cancelAnimationFrame
+		|| window.mozCancelAnimationFrame
+		|| function(requestID){clearTimeout(requestID)} //fall back
+
+
+	
+	
+	var drawMap = function() {
+		var startX = WIDTH/2 - Player.list[Player.selfId].x
+		var startY = HEIGHT/2 - Player.list[Player.selfId].y
+		ctx.drawImage(Img.background,startX,startY);
+		
+	}
+	
+	
+	//
+	
+	
+	socket.on('addToChat', function(data){
+		chatText.innerHTML += '<div>' + data + '</div>';
+		chatText.scrollTop = chatText.scrollHeight;
+	});
+	
+	socket.on('evalAnswer', function(data){
+		console.log(data);
+	});
+	
+	chatForm.onsubmit = function(e) {
+		e.preventDefault();
+		if(chatInput.value[0] === '/') {
+			socket.emit('evalServer', chatInput.value.slice(1));
+		} else {
+			socket.emit('sendMsgToServer', {msg:chatInput.value,user:Player.fromID(Player.selfId).name});
+		}
+		chatInput.value = "";
+	}
+	
+	document.onkeydown = function(event) {
+		if(event.keyCode === 68) { // D
+			socket.emit('keyPress', {inputId:'right',state:true});
+		} else if(event.keyCode === 83) { //S
+			socket.emit('keyPress', {inputId:'down',state:true});
+		} else if(event.keyCode === 65) { //A
+			socket.emit('keyPress', {inputId:'left',state:true});
+		} else if(event.keyCode === 87) { //W
+			socket.emit('keyPress', {inputId:'up',state:true});
+		} else if(event.keyCode === 32) { //SPACEBAR
+			socket.emit('keyPress', {inputId:'space',state:true});
+		} else if(event.keyCode === 69) { //E
+			socket.emit('keyPress', {inputId:'use',state:true});
+		}
+	}
+	
+	document.onkeyup = function(event) {
+		if(event.keyCode === 68) { // D
+			socket.emit('keyPress', {inputId:'right',state:false});
+		} else if(event.keyCode === 83) { //S
+			socket.emit('keyPress', {inputId:'down',state:false});
+		} else if(event.keyCode === 65) { //A
+			socket.emit('keyPress', {inputId:'left',state:false});
+		} else if(event.keyCode === 87) { //W
+			socket.emit('keyPress', {inputId:'up',state:false});
+		} else if(event.keyCode === 32) { //SPACEBAR
+			socket.emit('keyPress', {inputId:'space',state:false});
+		} else if(event.keyCode === 69) { //E
+			socket.emit('keyPress', {inputId:'use',state:false});
+		}
+	}
+	
+	document.onmousedown = function(event) {
+		if(Game.placingStructure) {
+			socket.emit('placedStructure', {structureName:Game.placingStructure, x:Game.input.mouseRealX, y:Game.input.mouseRealY});
+			Game.placingStructure = false;
+		} else if(Game.ctxInteract){
+			var x = -Game.width/2 + event.clientX - 8;
+			var y = -Game.height/2 + event.clientY - 8;
+			var angle = Math.atan2(y,x) / Math.PI * 180; 
+
+			socket.emit('keyPress', {inputId:'attack',state:true,mouseAngle:angle});
+		}
+		return false
+	}
+	
+	document.onmouseup = function(event) {
+		socket.emit('keyPress', {inputId:'attack',state:false});
+	}
+	
+	document.onmousemove = function(event) {
+		if(Player.selfId){
+			var x = -Game.width/2 + event.clientX - 8;
+			var y = -Game.height/2 + event.clientY - 8;
+			var angle = Math.atan2(y,x) / Math.PI * 180; 
+			Game.input.mouseRealX = event.clientX + GameObject.fromID(Player.selfId).x - Game.width/2;
+			Game.input.mouseRealY = event.clientY + GameObject.fromID(Player.selfId).y - Game.height/2;
+			
+			socket.emit('keyPress', {inputId:'mouseAngle',angle:angle});
+			socket.emit('keyPress', {inputId:'mousePos',x:Game.input.mouseRealX,y:Game.input.mouseRealY});
+		}
+	}
+	
+	
+	
+	
+</script>
+</body>
