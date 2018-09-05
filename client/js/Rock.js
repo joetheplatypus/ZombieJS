@@ -20,7 +20,7 @@ export default class Rock extends GameObject {
     const x = relPos.x;
     const y = relPos.y;
 
-    Game.ctx.drawImage(Img.rock,x-Img.rock.width/2,y-Img.rock.height/2);
+    // Game.ctx.drawImage(Img.rock,x-Img.rock.width/2,y-Img.rock.height/2);
 
     var hpWidth = 30 * this.health/this.maxHealth;
     Game.ctx.fillStyle = "red";

@@ -26,7 +26,7 @@ export default class Structure extends GameObject{
     const y = relPos.y;
     const image = GUI.structureImages.get(this.type)
 
-    Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
+    // Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
 
     if(this.health !== this.maxHealth) {
       var hpWidth = 30 * this.health/this.maxHealth;

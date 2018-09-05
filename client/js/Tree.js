@@ -22,7 +22,7 @@ export default class Tree extends GameObject {
     const x = relPos.x;
     const y = relPos.y;
 
-    Game.ctx.drawImage(Img.tree,x-Img.tree.width/2,y-Img.tree.height/2);
+    Img.draw('tree', x, y)
 
     var hpWidth = 30 * this.health/this.maxHealth;
     Game.ctx.fillStyle = "red";

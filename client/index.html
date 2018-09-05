@@ -58,6 +58,7 @@
 	import CopperOre from './client/js/CopperOre.js'
 	import IronOre from './client/js/IronOre.js'
 	import DOM from './client/js/DOM.js'
+	import Img from './client/js/Image.js'
 
 	//DOM references
 
@@ -173,10 +174,15 @@
 	
 	socket.on('update',function(params) {
 
-		params.timeReceived = new Date().getTime();
-		Game.lastPacket = Game.thisPacket;
-		Game.thisPacket = params;
-		Game.deltaTime = Game.thisPacket.timeReceived - Game.lastPacket.timeReceived
+		if(Game.thisPacket) {
+			Game.lastPacket = Game.thisPacket;
+			Game.thisPacket = params;
+			Game.thisPacket.timeReceived = new Date().getTime();
+			Game.deltaTime = Game.thisPacket.timeReceived - Game.lastPacket.timeReceived
+		} else {
+			Game.thisPacket = params;
+			Game.thisPacket.timeReceived = new Date().getTime();
+		}	
 
 		for(var i=0; i<params.data.length; i++) {
 			const classToFind = classMap.get(params.data[i].className);
@@ -213,9 +219,13 @@
 		Game.mapctx.fillStyle = "black";
 		Game.mapctx.fillRect(0,0,Game.minimapWidth,Game.minimapHeight);
 		Game.mapctx.fillStyle = "green";
+
+		drawMap();
 		
 		GameObject.drawAll();
 		GameObject.statUpdateAll();
+
+		
 		
 
 		if(Game.placingStructure) {
@@ -245,9 +255,13 @@
 	
 	
 	var drawMap = function() {
-		var startX = WIDTH/2 - Player.list[Player.selfId].x
-		var startY = HEIGHT/2 - Player.list[Player.selfId].y
-		ctx.drawImage(Img.background,startX,startY);
+		for(var i = 0; i < 57; i++) {
+			for(var j = 0; j < 57; j++) {
+				const coords = Game.absoluteToRelative({x:j*128,y:i*128});
+				const image = Img.map.get('grass-1');
+  			Game.ctx.drawImage(image.img, image.srcX, image.srcY, image.width, image.height, coords.x, coords.y, image.width, image.height,);
+			}
+		}
 		
 	}
 	
@@ -276,33 +290,33 @@
 	
 	document.onkeydown = function(event) {
 		if(event.keyCode === 68) { // D
-			socket.emit('keyPress', {inputId:'right',state:true});
+			socket.emit('playerInput', {inputId:'right',state:true});
 		} else if(event.keyCode === 83) { //S
-			socket.emit('keyPress', {inputId:'down',state:true});
+			socket.emit('playerInput', {inputId:'down',state:true});
 		} else if(event.keyCode === 65) { //A
-			socket.emit('keyPress', {inputId:'left',state:true});
+			socket.emit('playerInput', {inputId:'left',state:true});
 		} else if(event.keyCode === 87) { //W
-			socket.emit('keyPress', {inputId:'up',state:true});
+			socket.emit('playerInput', {inputId:'up',state:true});
 		} else if(event.keyCode === 32) { //SPACEBAR
-			socket.emit('keyPress', {inputId:'space',state:true});
+			socket.emit('playerInput', {inputId:'space',state:true});
 		} else if(event.keyCode === 69) { //E
-			socket.emit('keyPress', {inputId:'use',state:true});
+			socket.emit('playerInput', {inputId:'use',state:true});
 		}
 	}
 	
 	document.onkeyup = function(event) {
 		if(event.keyCode === 68) { // D
-			socket.emit('keyPress', {inputId:'right',state:false});
+			socket.emit('playerInput', {inputId:'right',state:false});
 		} else if(event.keyCode === 83) { //S
-			socket.emit('keyPress', {inputId:'down',state:false});
+			socket.emit('playerInput', {inputId:'down',state:false});
 		} else if(event.keyCode === 65) { //A
-			socket.emit('keyPress', {inputId:'left',state:false});
+			socket.emit('playerInput', {inputId:'left',state:false});
 		} else if(event.keyCode === 87) { //W
-			socket.emit('keyPress', {inputId:'up',state:false});
+			socket.emit('playerInput', {inputId:'up',state:false});
 		} else if(event.keyCode === 32) { //SPACEBAR
-			socket.emit('keyPress', {inputId:'space',state:false});
+			socket.emit('playerInput', {inputId:'space',state:false});
 		} else if(event.keyCode === 69) { //E
-			socket.emit('keyPress', {inputId:'use',state:false});
+			socket.emit('playerInput', {inputId:'use',state:false});
 		}
 	}
 	
@@ -315,13 +329,13 @@
 			var y = -Game.height/2 + event.clientY - 8;
 			var angle = Math.atan2(y,x) / Math.PI * 180; 
 
-			socket.emit('keyPress', {inputId:'attack',state:true,mouseAngle:angle});
+			socket.emit('playerInput', {inputId:'attack',state:true,mouseAngle:angle});
 		}
 		return false
 	}
 	
 	document.onmouseup = function(event) {
-		socket.emit('keyPress', {inputId:'attack',state:false});
+		socket.emit('playerInput', {inputId:'attack',state:false});
 	}
 	
 	document.onmousemove = function(event) {
@@ -332,8 +346,7 @@
 			Game.input.mouseRealX = event.clientX + GameObject.fromID(Player.selfId).x - Game.width/2;
 			Game.input.mouseRealY = event.clientY + GameObject.fromID(Player.selfId).y - Game.height/2;
 			
-			socket.emit('keyPress', {inputId:'mouseAngle',angle:angle});
-			socket.emit('keyPress', {inputId:'mousePos',x:Game.input.mouseRealX,y:Game.input.mouseRealY});
+			socket.emit('playerMouse', {inputId:'mouseAngle',angle:angle});
 		}
 	}
 	

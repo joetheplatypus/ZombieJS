@@ -17,6 +17,6 @@ export default class Metal extends GameObject{
     const x = relPos.x;
     const y = relPos.y;
 
-    Game.ctx.drawImage(Img.metalmine,x-Img.metalmine.width/2,y-Img.metalmine.height/2);
+    // Game.ctx.drawImage(Img.metalmine,x-Img.metalmine.width/2,y-Img.metalmine.height/2);
   }
 }

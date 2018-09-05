@@ -2,6 +2,7 @@ import Game from './Helper.js'
 import Inventory from './Inventory.js'
 import GameObject from './GameObject.js';
 import Lerp from './Lerp.js'
+import Img from './Image.js'
 
 export default class Player extends GameObject {
   constructor(params) {
@@ -14,6 +15,7 @@ export default class Player extends GameObject {
     this.maxHealth = params.maxHealth;
     this.score = params.score;
     this.name = params.name;
+    this.angle = params.angle;
 
     this.renderLayer = 2;
   }
@@ -25,24 +27,34 @@ export default class Player extends GameObject {
     
     var hpWidth = 30 * this.health/this.maxHealth;
     Game.ctx.fillStyle = "red";
-    Game.ctx.fillRect(x - hpWidth/2, y - 50, hpWidth,4);
+    Game.ctx.fillRect(x - hpWidth/2, y - 35, hpWidth,4);
           
     
-    Game.ctx.beginPath();
-    Game.ctx.arc(x, y, 40, 0, 2 * Math.PI, false);
-    Game.ctx.fillStyle = "#A29584";
-    Game.ctx.fill();
-    Game.ctx.lineWidth = 5;
-    Game.ctx.strokeStyle = "#6E6865";
-    Game.ctx.stroke();
+    // Game.ctx.beginPath();
+    // Game.ctx.arc(x, y, 40, 0, 2 * Math.PI, false);
+    // Game.ctx.fillStyle = "#A29584";
+    // Game.ctx.fill();
+    // Game.ctx.lineWidth = 5;
+    // Game.ctx.strokeStyle = "#6E6865";
+    // Game.ctx.stroke();
 
-    Game.ctx.fillStyle = "black";
-    Game.ctx.font="30px Verdana";
-    Game.ctx.textAlign = "center";
-    Game.ctx.fillText(this.score,x,y+9);
+
+    // Game.ctx.font="30px Verdana";
+    // Game.ctx.textAlign = "center";
+    // Game.ctx.fillText(this.score,x,y+9);
     
+    Game.ctx.fillStyle = "black";
     Game.ctx.font="10px Verdana";
-    Game.ctx.fillText(this.name,x,y+20);
+    Game.ctx.textAlign="center"; 
+    Game.ctx.fillText(this.name,x,y-45);
+
+    
+    console.log(this.angle)
+    Game.ctx.save();
+    Game.ctx.translate(x,y);
+    Game.ctx.rotate(this.angle * Math.PI/180);
+    Img.draw('player-stand', 0, 0)
+    Game.ctx.restore();
     
     //minimap
     const minimapRelPos = Game.absoluteToRelativeMinimap({x:this.x,y:this.y});
@@ -72,6 +84,7 @@ export default class Player extends GameObject {
     this.goalY = data.y;
     this.health = data.health;
     this.score = data.score;    
+    this.angle = data.angle;
   }
   statUpdate() {
     // linear interp happens after update

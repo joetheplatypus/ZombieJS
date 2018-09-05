@@ -12,12 +12,7 @@ class Player extends Entity {
     super(param);
     this.x = Math.random()*5000;
     this.y = Math.random()*5000;
-
-    this.input = {
-      mouseAngle: 0,
-      mouseX: 0,
-      mouseY: 0
-    };
+    this.angle = 0;
     //classname
     this.className = 'Player'
     //user info
@@ -51,7 +46,8 @@ class Player extends Entity {
       health: this.health,
       score: this.score,
       name: this.name,
-      className: this.className
+      className: this.className,
+      angle: this.angle,
     }
   }
 
@@ -65,7 +61,8 @@ class Player extends Entity {
       maxHealth: this.maxHealth,
       score: this.score,
       name: this.name,
-      className: this.className
+      className: this.className,
+      angle: this.angle,
     }
   }
 
@@ -85,7 +82,7 @@ class Player extends Entity {
     }
   }
 
-  onKeyDown(key, mouseAngle) {
+  onKeyDown(key) {
     if(key === "up") {
       this.velY = -this.speed
     } else if(key === "down") {
@@ -98,7 +95,7 @@ class Player extends Entity {
     }
     if(key === "attack" && !this.attackBuffer) {
       this.attackBuffer = true;
-      this.shootProj(mouseAngle)
+      this.shootProj(this.angle)
     }
   }
 
@@ -256,14 +253,17 @@ class Player extends Entity {
     });
 
     //setup function bindings
-    socket.on('keyPress', function(data){
+    socket.on('playerInput', function(data){
       if(data.state) {
-        player.onKeyDown(data.inputId, data.mouseAngle)
+        player.onKeyDown(data.inputId)
       } else {
         player.onKeyUp(data.inputId)
       }
     });
 
+    socket.on('playerMouse', function(data) {
+      player.angle = data.angle;
+    });
 
     // socket.on('inventorySelectItem', function(itemName) {
     //   player.onSelectItem(itemName)

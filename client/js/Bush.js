@@ -17,6 +17,6 @@ export default class Bush extends GameObject {
     const x = relPos.x;
     const y = relPos.y;
 
-    Game.ctx.drawImage(Img.bush,x-Img.bush.width/2,y-Img.bush.height/2);
+    // Game.ctx.drawImage(Img.bush,x-Img.bush.width/2,y-Img.bush.height/2);
   }
 }

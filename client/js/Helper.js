@@ -1,5 +1,4 @@
 import Player from './Player.js'
-import Image from './Image.js'
 import GameObject from './GameObject.js';
 
 export default {
@@ -32,38 +31,7 @@ export default {
 			flint: document.getElementById("resource-flint"),
 			metal: document.getElementById("resource-metal"),
 		},
-		// itemNames: new Map([[
-		// 	'wooden-crafting-hut', 'Wooden Crafting Hut'
-		// ],[
-		// 	'bow', 'Bow'
-		// ],[
-		// 	'wooden-axe', 'Wooden Axe'
-		// ],[
-		// 	'wooden-pickaxe', 'Wooden Pickaxe'
-		// ],[
-		// 	'wooden-sword', 'Wooden Swords'
-		// ],[
-		// 	'stone', 'Some Stone'
-		// ],])
 	},
-	// classMaps: {
-	// 	itemImages: new Map([[
-	// 		'wood', Image.ItemTile.wood
-	// 	],[
-	// 		'wooden-crafting-hut', Image.item.woodenCraftingHut
-	// 	],[
-	// 		'bow', Image.item.bow
-	// 	],[
-	// 		'wooden-axe', Image.item.woodenAxe
-	// 	],[
-	// 		'wooden-pickaxe', Image.item.woodenPickaxe
-	// 	],[
-	// 		'wooden-sword', Image.item.woodenSword
-	// 	]]),
-	// 	structureImages: new Map([[
-	// 		'wooden-crafting-hut', Image.structure.woodenCraftingHut
-	// 	]])
-	// },
 	input: {
 		mouseRealX: 0,
 		mouseRealY: 0
