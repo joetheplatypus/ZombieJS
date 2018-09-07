@@ -24,8 +24,8 @@ export default class Structure extends GameObject{
     const relPos = Game.absoluteToRelative({x:this.x,y:this.y});
     const x = relPos.x;
     const y = relPos.y;
-    const image = GUI.structureImages.get(this.type)
 
+    Img.draw(this.type, x, y)
     // Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
 
     if(this.health !== this.maxHealth) {

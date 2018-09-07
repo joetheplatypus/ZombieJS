@@ -231,8 +231,9 @@
 		if(Game.placingStructure) {
 			var x = Game.input.mouseRealX - Player.fromID(Player.selfId).x + Game.width/2;
 			var y = Game.input.mouseRealY - Player.fromID(Player.selfId).y + Game.height/2;
-			const image = GUI.structureImages.get(Game.placingStructure)
-			Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
+			Img.draw(Game.placingStructure, x, y)
+			// const image = GUI.structureImages.get(Game.placingStructure)
+			// Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
 		}
 
 		
@@ -257,8 +258,8 @@
 	var drawMap = function() {
 		for(var i = 0; i < 57; i++) {
 			for(var j = 0; j < 57; j++) {
-				const coords = Game.absoluteToRelative({x:j*128,y:i*128});
-				const image = Img.map.get('grass-1');
+				const coords = Game.absoluteToRelative({x:j*127,y:i*127});
+				const image = Img.map.get('dirt-1');
   			Game.ctx.drawImage(image.img, image.srcX, image.srcY, image.width, image.height, coords.x, coords.y, image.width, image.height,);
 			}
 		}

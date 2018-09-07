@@ -47,9 +47,7 @@ export default class Player extends GameObject {
     Game.ctx.font="10px Verdana";
     Game.ctx.textAlign="center"; 
     Game.ctx.fillText(this.name,x,y-45);
-
     
-    console.log(this.angle)
     Game.ctx.save();
     Game.ctx.translate(x,y);
     Game.ctx.rotate(this.angle * Math.PI/180);

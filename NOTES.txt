@@ -1,5 +1,5 @@
 things still to implement into engine ->
-  1) server time stamp not real timestamp
+  1)
   2)
   3)
 game ideas ->

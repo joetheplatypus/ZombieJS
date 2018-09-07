@@ -19,8 +19,6 @@ export default class ItemTile extends GameObject{
     const x = relPos.x;
     const y = relPos.y;
 
-    // const image = GUI.itemImages.get(this.item)
-  
-    // Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
+    Img.draw('icon-wood',x,y);
   }
 }

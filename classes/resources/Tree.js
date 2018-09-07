@@ -7,8 +7,8 @@ class Tree extends Resource {
     //class name
     this.className = 'Tree'
     //physics
-    this.width = 120;
-    this.height = 120;
+    this.width = 100;
+    this.height = 100;
     //resource
     this.resourceItems = [{item:"wood", amount: 5}]
     

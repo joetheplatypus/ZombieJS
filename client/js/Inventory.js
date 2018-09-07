@@ -1,6 +1,7 @@
 import Game from './Helper.js'
 import GUI from './GUI.js'
 import DOM from './DOM.js'
+import Img from './Image.js'
 
 const Inventory =  {
   items: [],
@@ -26,24 +27,27 @@ const Inventory =  {
       const item = this.items[i];
       let div = document.createElement('div');
       let text = document.createElement('span');
-      let img = GUI.itemImages.get(item.item.name);
+      let img = Img.map.get(`icon-${item.item.name}`);
       div.setAttribute('data-item',item.item.name);
-      img.style.opacity = "0.6";
+      div.style.opacity = "0.6";
+      div.style.backgroundImage = `url('${img.img.src}')`;
+      div.style.backgroundPosition = `-${img.srcX}px -${img.srcY}px`;
+      div.style.width = '64px';
+      div.style.height = '64px';
       text.innerText = item.amount
       div.onmouseenter = function() {
         Game.ctxInteract = false;
-        img.style.opacity = "1";
+        div.style.opacity = "1";
       }
       div.onmouseleave = function() {
         Game.ctxInteract = true;
-        img.style.opacity = "0.6";
+        div.style.opacity = "0.6";
       }
       div.onclick = function() {
         const itemName = this.getAttribute('data-item')
         Inventory.onUseItem(itemName)
       }
 
-      div.appendChild(img);
       div.appendChild(text);
       DOM.inventory.appendChild(div)
     
@@ -72,7 +76,6 @@ const Inventory =  {
       }
       button.appendChild(text);
       DOM.crafting.appendChild(button)
-
     }
   }
 }
