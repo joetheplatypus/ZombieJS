@@ -56,7 +56,6 @@
 	import GUI from './client/js/GUI.js'
 	import GameObject from './client/js/GameObject.js'
 	import CopperOre from './client/js/CopperOre.js'
-	import IronOre from './client/js/IronOre.js'
 	import DOM from './client/js/DOM.js'
 	import Img from './client/js/Image.js'
 
@@ -90,6 +89,7 @@
 		Game.height = canvas.height;
 		Game.width = canvas.width;
 	}
+
 
 	ctx.font = "30px Arial";
 
@@ -126,7 +126,6 @@
 	classMap.set('Structure', Structure)
 	classMap.set('ItemTile', ItemTile)
 	classMap.set('CopperOre', CopperOre)
-	classMap.set('IronOre', IronOre)
 
 	//SOCKET PACKS
 
@@ -178,7 +177,13 @@
 			Game.lastPacket = Game.thisPacket;
 			Game.thisPacket = params;
 			Game.thisPacket.timeReceived = new Date().getTime();
-			Game.deltaTime = Game.thisPacket.timeReceived - Game.lastPacket.timeReceived
+			const newDeltaTime = Game.thisPacket.timeReceived - Game.lastPacket.timeReceived;
+			if(Game.deltaTime) {
+				Game.deltaTime = (Game.deltaTime + newDeltaTime)/2
+			} else {
+				Game.deltaTime = newDeltaTime
+			}
+			// console.log(Game.deltaTime)
 		} else {
 			Game.thisPacket = params;
 			Game.thisPacket.timeReceived = new Date().getTime();
@@ -256,11 +261,15 @@
 	
 	
 	var drawMap = function() {
-		for(var i = 0; i < 57; i++) {
-			for(var j = 0; j < 57; j++) {
-				const coords = Game.absoluteToRelative({x:j*127,y:i*127});
-				const image = Img.map.get('dirt-1');
-  			Game.ctx.drawImage(image.img, image.srcX, image.srcY, image.width, image.height, coords.x, coords.y, image.width, image.height,);
+
+		// var pattern = Game.ctx.createPattern(Img.background, 'repeat');
+		// Game.ctx.fillStyle = pattern;
+		// Game.ctx.fillRect(Game.absoluteToRelative({x:0,y:0}).x, Game.absoluteToRelative({x:0,y:0}).y, 8000, 8000);
+
+		for(var i = 0; i < 114; i++) {
+			for(var j = 0; j < 114; j++) {
+				const coords = Game.absoluteToRelative({x:j*62,y:i*62});
+  			Img.draw('dirt-1', coords.x, coords.y)
 			}
 		}
 		

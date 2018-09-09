@@ -24,8 +24,8 @@ class Player extends Entity {
     this.health = 100;
     this.score = 0;
     //physics
-    this.width = 75;
-    this.height = 75;
+    this.width = 40;
+    this.height = 40;
     //misc
     this.attackBuffer = false
     // this.harvestProgress = 0;

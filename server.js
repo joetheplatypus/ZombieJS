@@ -9,7 +9,6 @@ const RigidBody = require('./classes/RigidBody')
 const Player = require('./classes/Player');
 const Tree = require('./classes/resources/Tree');
 const Rock = require('./classes/resources/Rock');
-const IronOre = require('./classes/resources/IronOre');
 const CopperOre = require('./classes/resources/CopperOre');
 const CraftingRecipe = require('./classes/CraftingRecipe');
 const Map = require('./classes/Map');

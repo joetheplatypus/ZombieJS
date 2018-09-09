@@ -5,8 +5,8 @@ class CopperOre extends Resource {
   constructor(params) {
     super(params);
     this.className = 'CopperOre'
-    this.width = 100;
-    this.height = 100;
+    this.width = 64;
+    this.height = 64;
     this.resourceItems = [{item:"copper", amount: 10}]
     GameObject.initPack.push(this.getInitPack())
   }

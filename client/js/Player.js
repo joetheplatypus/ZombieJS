@@ -87,7 +87,7 @@ export default class Player extends GameObject {
   statUpdate() {
     // linear interp happens after update
     if(Game.lastPacket && Game.thisPacket) {
-      const estTime = (new Date()).getTime() - 1*Game.deltaTime
+      const estTime = (new Date()).getTime() - Game.deltaTime
       this.x = Lerp(Game.lastPacket.timeReceived, Game.thisPacket.timeReceived, this.lastX, this.goalX, estTime)
       this.y = Lerp(Game.lastPacket.timeReceived, Game.thisPacket.timeReceived, this.lastY, this.goalY, estTime)
     }

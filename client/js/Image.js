@@ -1,82 +1,141 @@
 import Game from './Helper.js'
 //IMAGES
 const Img = {};
-Img.characters = new Image()
-Img.characters.src = '/client/img/spritesheet_characters.png'
-Img.tilesBig = new Image()
-Img.tilesBig.src = '/client/img/tilesheetbig.png'
-Img.tiles = new Image()
-Img.tiles.src = '/client/img/tilesheet.png'
+Img.spritesheet = new Image();
+Img.spritesheet.src = '/client/img/spritesheet.png'
+// Img.background = new Image();
+// Img.background.src = '/client/img/background.png'
 
 //must use icon- prefix for all icon images
 Img.map = new Map([[
   'player-stand',
   {
-    img: Img.characters,
-    srcX: 389,
-    srcY: 175,
-    width: 35,
-    height: 44,
+    srcX: 518,
+    srcY: 58,
+    width: 36,
+    height: 43,
   }
 ],[
   'tree',
   {
-    img: Img.tilesBig,
-    srcX: 18*128,
-    srcY: 6*128+1,
-    width: 254,
-    height: 254,
+    srcX: 1041,
+    srcY: 354,
+    width: 64,
+    height: 64,
   }
 ],[
   'grass-1',
   {
-    img: Img.tilesBig,
-    srcX: 0,
-    srcY: 0,
-    width: 128,
-    height: 128,
+    srcX: 563,
+    srcY: 58,
+    width: 64,
+    height: 64,
   }
 ],[
   'dirt-1',
   {
-    img: Img.tilesBig,
-    srcX: 513,
-    srcY: 0,
-    width: 127,
-    height: 127,
+    srcX: 859,
+    srcY: 58,
+    width: 64,
+    height: 64,
+  }
+],[
+  'rock',
+  {
+    srcX: 1007,
+    srcY: 58,
+    width: 64,
+    height: 64,
+  }
+],[
+  'copper-ore',
+  {
+    srcX: 79,
+    srcY: 280,
+    width: 64,
+    height: 64,
+  }
+],[
+  'copper-wall',
+  {
+    srcX: 301,
+    srcY: 428,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wall',
+  {
+    srcX: 449,
+    srcY: 1020,
+    width: 64,
+    height: 64,
   }
 ],[
   'wooden-wall',
   {
-    img: Img.tilesBig,
-    srcX: 14*128+1,
-    srcY: 3*128+1,
-    width: 127,
-    height: 127,
+    srcX: 1303,
+    srcY: 58,
+    width: 64,
+    height: 64,
   }
 ],[
   'icon-wood',
   {
-    img: Img.tiles,
-    srcX: 21*64+1,
-    srcY: 9*64+1,
-    width: 63,
-    height: 63,
+    srcX: 745,
+    srcY: 650,
+    width: 64,
+    height: 64,
   }
 ],[
   'icon-wooden-wall',
   {
-    img: Img.tiles,
-    srcX: 14*64+1,
-    srcY: 3*64+1,
-    width: 63,
-    height: 63,
+    srcX: 1303,
+    srcY: 58,
+    width: 64,
+    height: 64,
+  }
+],[
+  'icon-stone-wall',
+  {
+    srcX: 449,
+    srcY: 1020,
+    width: 64,
+    height: 64,
+  }
+],[
+  'icon-stone',
+  {
+    srcX: 153,
+    srcY: 576,
+    width: 64,
+    height: 64,
+  }
+],[
+  'icon-copper-wall',
+  {
+    srcX: 301,
+    srcY: 428,
+    width: 64,
+    height: 64,
+  }
+],[
+  'icon-copper',
+  {
+    srcX: 1041,
+    srcY: 724,
+    width: 64,
+    height: 64,
   }
 ]])
 
 Img.draw = function(imageName, x, y) {
   const image = Img.map.get(imageName);
-  Game.ctx.drawImage(image.img, image.srcX, image.srcY, image.width, image.height, x - image.width/2, y - image.height/2, image.width, image.height,);
+  if(x < 0-(image.width)/2 || y < 0-(image.height)/2 || x > Game.width+(image.width)/2 || y > Game.height+(image.height)/2) {
+    //img not in viewport
+  } else {
+    Game.ctx.drawImage(Img.spritesheet, image.srcX+1, image.srcY+1, image.width-2, image.height-2, x - (image.width-2)/2, y - (image.height-2)/2, image.width-2, image.height-2);
+  }
 }
 
 

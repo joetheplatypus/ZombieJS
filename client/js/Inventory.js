@@ -30,7 +30,7 @@ const Inventory =  {
       let img = Img.map.get(`icon-${item.item.name}`);
       div.setAttribute('data-item',item.item.name);
       div.style.opacity = "0.6";
-      div.style.backgroundImage = `url('${img.img.src}')`;
+      div.style.backgroundImage = `url('${Img.spritesheet.src}')`;
       div.style.backgroundPosition = `-${img.srcX}px -${img.srcY}px`;
       div.style.width = '64px';
       div.style.height = '64px';

@@ -21,6 +21,7 @@ export default class CopperOre extends GameObject {
     const y = relPos.y;
 
     // Game.ctx.drawImage(Img.copperOre,x-Img.copperOre.width/2,y-Img.copperOre.height/2);
+    Img.draw('copper-ore', x, y)
 
     var hpWidth = 30 * this.health/this.maxHealth;
     Game.ctx.fillStyle = "red";

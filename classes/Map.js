@@ -1,6 +1,5 @@
 const Tree = require('./resources/Tree');
 const Rock = require('./resources/Rock');
-const IronOre = require('./resources/IronOre');
 const CopperOre = require('./resources/CopperOre');
 
 class Map {
@@ -33,8 +32,6 @@ class Map {
         } else if(r > 0.6) {
           new Rock({y:i*1200 + Math.random()*1000, x:j*1200 + Math.random()*1000})
         } else if(r > 0.4) {
-          new IronOre({y:i*1200 + Math.random()*1000, x:j*1200 + Math.random()*1000})
-        } else if(r > 0.2) {
           new CopperOre({y:i*1200 + Math.random()*1000, x:j*1200 + Math.random()*1000})
         } else {
           new Tree({y:i*1200 + Math.random()*1000, x:j*1200 + Math.random()*1000})
