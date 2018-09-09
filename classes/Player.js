@@ -4,7 +4,7 @@ const Physics = require('./Physics');
 const Inventory = require('./Inventory');
 const StructureFactory = require('./StructureFactory');
 const Projectile = require('./Projectile');
-
+const Item = require('./Item')
 const Settings = require('../settings')
 
 class Player extends Entity {

@@ -1,4 +1,5 @@
 const Structure = require('../Structure');
+const GameObject = require('../GameObject');
 
 class WoodenWall extends Structure {
   constructor(params) {

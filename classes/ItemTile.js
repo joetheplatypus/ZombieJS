@@ -1,6 +1,6 @@
-GameObject = require('./GameObject');
-Item = require('./Item');
-Player = require('./Player')
+const GameObject = require('./GameObject');
+const Item = require('./Item');
+const Player = require('./Player')
 
 class ItemTile extends GameObject {
   constructor(params) {

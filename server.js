@@ -13,6 +13,7 @@ const CopperOre = require('./classes/resources/CopperOre');
 const CraftingRecipe = require('./classes/CraftingRecipe');
 const Map = require('./classes/Map');
 const Game = require('./classes/Game');
+const Item = require('./classes/Item')
 
 const Settings = require('./settings')
 
@@ -79,7 +80,21 @@ io.sockets.on('connection', function(socket){
 
 Item.setup(Player)
 CraftingRecipe.setup()
-Map.generate();
+
+for(var i=0; i < 7; i++) {
+	for(var j=0; j < 7; j++) {
+		const r = Math.random()
+		if(r > 0.8) {
+			new Tree({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+		} else if(r > 0.6) {
+			new Rock({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+		} else if(r > 0.4) {
+			new CopperOre({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+		} else {
+			new Tree({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+		}
+	}
+}
 
 //GAME LOOP
 setInterval(function() {

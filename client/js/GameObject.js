@@ -20,6 +20,12 @@ class GameObject {
   getRenderLayer() {
     return this.renderLayer
   }
+  inViewPort(viewport) {
+    if(this.x < viewport.left - 64 || this.y < viewport.top - 64 || this.x > viewport.right + 64 || this.y > viewport.bottom + 64) {
+      return false;
+    }
+    return true;
+  }
   static fromID(id) {
     for(var i = 0; i < GameObject.list.length; i++) {
       if(GameObject.list[i].id === id) {
@@ -27,10 +33,12 @@ class GameObject {
       }
     }
   }
-  static drawAll() {
+  static drawAll(viewport) {
     let renderLayers =[[],[],[]]
     for(var i = 0; i < GameObject.list.length; i++) {
-      renderLayers[GameObject.list[i].getRenderLayer()-1].push(GameObject.list[i])
+      if(GameObject.list[i].inViewPort(viewport)) {
+        renderLayers[GameObject.list[i].getRenderLayer()-1].push(GameObject.list[i])
+      }
     }
     for(var i = 0; i < renderLayers.length; i++) {
       for(var j = 0; j < renderLayers[i].length; j++) {

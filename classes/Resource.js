@@ -1,8 +1,8 @@
-const Entity = require('./Entity');
+const Block = require('./Block');
 const Player = require('./Player');
 const ItemTile = require('./ItemTile');
 
-class Resource extends Entity {
+class Resource extends Block {
   constructor(params) {
     super(params);
     this.resourceItems = []

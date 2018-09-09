@@ -227,16 +227,28 @@
 
 		drawMap();
 		
-		GameObject.drawAll();
+		const tlcoords = Game.relativeToAbsolute({x:0,y:0})
+		const brcoords = Game.relativeToAbsolute({x:Game.length,y:Game.height})
+		const viewport = {
+			top:tlcoords.y,
+			left:tlcoords.x,
+			bottom:brcoords.y,
+			right:brcoords.x
+		}
+		GameObject.drawAll(viewport);
 		GameObject.statUpdateAll();
 
 		
 		
 
 		if(Game.placingStructure) {
-			var x = Game.input.mouseRealX - Player.fromID(Player.selfId).x + Game.width/2;
-			var y = Game.input.mouseRealY - Player.fromID(Player.selfId).y + Game.height/2;
-			Img.draw(Game.placingStructure, x, y)
+			var x = Game.input.mouseRealX - GameObject.fromID(Player.selfId).x + Game.width/2;
+			var y = Game.input.mouseRealY - GameObject.fromID(Player.selfId).y + Game.height/2;
+			const coords = {x:x, y:y};
+			const abscoords = Game.relativeToAbsolute(coords);
+			const snappedabscoords = Game.snapCoordsToTile(abscoords);
+			const relcoords = Game.absoluteToRelative(snappedabscoords);
+			Img.draw(Game.placingStructure, relcoords.x, relcoords.y);
 			// const image = GUI.structureImages.get(Game.placingStructure)
 			// Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
 		}
