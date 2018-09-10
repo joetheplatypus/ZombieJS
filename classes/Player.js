@@ -5,7 +5,9 @@ const Inventory = require('./Inventory');
 const StructureFactory = require('./StructureFactory');
 const Projectile = require('./Projectile');
 const Item = require('./Item')
-const Settings = require('../settings')
+const Settings = require('../settings');
+const Block = require('./Block');
+const Map = require('./Map')
 
 class Player extends Entity {
   constructor(param) {
@@ -148,12 +150,16 @@ class Player extends Entity {
   placeStructure(data) {
     if(this.inventory.hasItem(Item.fromName(data.structureName), 1)) {
       const structureClass = StructureFactory.getClass(data.structureName);
-      new structureClass({
-        x:data.x,
-        y:data.y,
-        owner:this.id
-      });
-      this.removeInventoryItem(Item.fromName(data.structureName), 1);
+      if(Block.tileOccupied(Map.coordToTile({x:data.x,y:data.y}))) {
+        // tile already occupied
+      } else {
+        new structureClass({
+          x:data.x,
+          y:data.y,
+          owner:this.id
+        });
+        this.removeInventoryItem(Item.fromName(data.structureName), 1);
+      }
     }
   }
 

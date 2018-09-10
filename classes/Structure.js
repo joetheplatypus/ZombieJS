@@ -3,8 +3,6 @@ const Block = require('./Block');
 class Structure extends Block {
   constructor(params) {
     super(params);
-    this.className = 'Structure';
-    this.type = '';
     this.owner = params.owner;
   }
 

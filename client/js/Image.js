@@ -72,6 +72,126 @@ Img.map = new Map([[
     height: 64,
   }
 ],[
+  'stone-wallt',
+  {
+    srcX: 671,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallb',
+  {
+    srcX: 1115,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-walll',
+  {
+    srcX: 597,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallr',
+  {
+    srcX: 1189,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallbt',
+  {
+    srcX: 819,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallbl',
+  {
+    srcX: 301,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallblr',
+  {
+    srcX: 449,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallbr',
+  {
+    srcX: 227,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallbtl',
+  {
+    srcX: 1041,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallbtr',
+  {
+    srcX: 967,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-walltl',
+  {
+    srcX: 745,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-walltr',
+  {
+    srcX: 671,
+    srcY: 798,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-walltlr',
+  {
+    srcX: 523,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-walllr',
+  {
+    srcX: 375,
+    srcY: 724,
+    width: 64,
+    height: 64,
+  }
+],[
+  'stone-wallbtlr',
+  {
+    srcX: 79,
+    srcY: 650,
+    width: 64,
+    height: 64,
+  }
+],[
   'wooden-wall',
   {
     srcX: 1303,
@@ -131,10 +251,22 @@ Img.map = new Map([[
 
 Img.draw = function(imageName, x, y) {
   const image = Img.map.get(imageName);
+  if(!image) {
+    console.log(imageName)
+  }
   if(x < 0-(image.width)/2 || y < 0-(image.height)/2 || x > Game.width+(image.width)/2 || y > Game.height+(image.height)/2) {
     //img not in viewport
   } else {
     Game.ctx.drawImage(Img.spritesheet, image.srcX+1, image.srcY+1, image.width-2, image.height-2, x - (image.width-2)/2, y - (image.height-2)/2, image.width-2, image.height-2);
+  }
+}
+Img.drawRed = function(imageName, x, y) {
+  const image = Img.map.get(imageName);
+  if(x < 0-(image.width)/2 || y < 0-(image.height)/2 || x > Game.width+(image.width)/2 || y > Game.height+(image.height)/2) {
+    //img not in viewport
+  } else {
+    Game.ctx.fillStyle='red';
+    Game.ctx.fillRect(x - (image.width-2)/2, y - (image.height-2)/2, image.width-2, image.height-2);
   }
 }
 

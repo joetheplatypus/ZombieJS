@@ -8,7 +8,7 @@ class StoneWall extends Structure {
     this.height = 64;
     this.health = 200;
     this.maxHealth = 200;
-    this.type = 'stone-wall'
+    this.className = 'StoneWall'
 
     GameObject.initPack.push(this.getInitPack())
   }

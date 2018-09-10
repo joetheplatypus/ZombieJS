@@ -8,7 +8,7 @@ class WoodenWall extends Structure {
     this.height = 64;
     this.health = 100;
     this.maxHealth = 100;
-    this.type = 'wooden-wall'
+    this.className = 'WoodenWall'
 
     GameObject.initPack.push(this.getInitPack())
   }

@@ -17,6 +17,9 @@ class GameObject {
   draw() {
 
   }
+  onRemove() {
+    
+  }
   getRenderLayer() {
     return this.renderLayer
   }

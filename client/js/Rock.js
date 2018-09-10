@@ -1,8 +1,8 @@
 import Game from './Helper.js'
 import Img from './Image.js'
-import GameObject from './GameObject.js';
+import Block from './Block.js';
 
-export default class Rock extends GameObject {
+export default class Rock extends Block {
   constructor(params) {
     super(params)
     this.health = params.health;

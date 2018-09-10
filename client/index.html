@@ -50,7 +50,9 @@
 	import Rock from './client/js/Rock.js'
 	import Metal from './client/js/Metal.js'
 	import Projectile from './client/js/Projectile.js'
-	import Structure from './client/js/Structure.js'
+	import CopperWall from './client/js/structures/CopperWall.js'
+	import WoodenWall from './client/js/structures/WoodenWall.js'
+	import StoneWall from './client/js/structures/StoneWall.js'
 	import Inventory from './client/js/Inventory.js'
 	import ItemTile from './client/js/ItemTile.js'
 	import GUI from './client/js/GUI.js'
@@ -58,6 +60,7 @@
 	import CopperOre from './client/js/CopperOre.js'
 	import DOM from './client/js/DOM.js'
 	import Img from './client/js/Image.js'
+	import Block from './client/js/Block.js'
 
 	//DOM references
 
@@ -123,7 +126,9 @@
 	classMap.set('Rock', Rock)
 	classMap.set('Metal', Metal)
 	classMap.set('Projectile', Projectile)
-	classMap.set('Structure', Structure)
+	classMap.set('CopperWall', CopperWall)
+	classMap.set('WoodenWall', WoodenWall)
+	classMap.set('StoneWall', StoneWall)
 	classMap.set('ItemTile', ItemTile)
 	classMap.set('CopperOre', CopperOre)
 
@@ -201,6 +206,7 @@
 		for(var i=0; i<data.length; i++) {
 			const classToFind = classMap.get(data[i].className);
 			if(GameObject.fromID(data[i].id)) {
+				GameObject.fromID(data[i].id).onRemove();
 				GameObject.list.splice(GameObject.list.findIndex(x => x.id === data[i].id), 1)
 			}
 			if(data[i].id === Player.selfId) {
@@ -246,11 +252,15 @@
 			var y = Game.input.mouseRealY - GameObject.fromID(Player.selfId).y + Game.height/2;
 			const coords = {x:x, y:y};
 			const abscoords = Game.relativeToAbsolute(coords);
+			const tile = Game.coordToTile(abscoords);
+			
 			const snappedabscoords = Game.snapCoordsToTile(abscoords);
 			const relcoords = Game.absoluteToRelative(snappedabscoords);
-			Img.draw(Game.placingStructure, relcoords.x, relcoords.y);
-			// const image = GUI.structureImages.get(Game.placingStructure)
-			// Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
+			if(Block.tileOccupied(tile)) {
+				Img.drawRed(Game.placingStructure, relcoords.x, relcoords.y);
+			} else {
+				Img.draw(Game.placingStructure, relcoords.x, relcoords.y);
+			}			
 		}
 
 		

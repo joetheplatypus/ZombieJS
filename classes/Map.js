@@ -46,7 +46,7 @@ class Map {
   addBlock(block) {
     const pos = this.coordToTile({x:block.x,y:block.y})
     this.tiles[pos.y][pos.x] = block
-  }
+  }  
 
 }
 const map = new Map

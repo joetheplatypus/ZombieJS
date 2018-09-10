@@ -2,13 +2,12 @@ import Game from './Helper.js'
 import Img from './Image.js'
 import Player from './Player.js'
 import GUI from './GUI.js'
-import GameObject from './GameObject.js';
+import Block from './Block.js';
 
-export default class Structure extends GameObject{
+export default class Structure extends Block{
   constructor(params) {
     super(params)
     this.health = params.health;
-    this.type = params.type;
     this.owner = params.owner;
     this.health = params.health;
     this.maxHealth = params.maxHealth;
@@ -21,12 +20,6 @@ export default class Structure extends GameObject{
   }
 
   draw() {
-    const relPos = Game.absoluteToRelative({x:this.x,y:this.y});
-    const x = relPos.x;
-    const y = relPos.y;
-
-    Img.draw(this.type, x, y)
-    // Game.ctx.drawImage(image,x-image.width/2,y-image.height/2);
 
     if(this.health !== this.maxHealth) {
       var hpWidth = 30 * this.health/this.maxHealth;
@@ -43,4 +36,5 @@ export default class Structure extends GameObject{
     }
     Game.mapctx.fillRect(minimapRelPos.x,minimapRelPos.y,10,10);
   }
+
 }

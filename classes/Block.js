@@ -9,6 +9,13 @@ class Block extends Entity {
     this.y = coords.y;
     Map.addBlock(this)
   }
+
+  static tileOccupied(tile) {
+    if(Map.tiles[tile.y][tile.x] instanceof Block) {
+      return true;
+    }
+    return false;
+  }
 }
 
 module.exports = Block;
