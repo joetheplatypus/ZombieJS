@@ -7,7 +7,8 @@ const Projectile = require('./Projectile');
 const Item = require('./Item')
 const Settings = require('../settings');
 const Block = require('./Block');
-const Map = require('./Map')
+const Map = require('./Map');
+const ItemTile = require('./ItemTile');
 
 class Player extends Entity {
   constructor(param) {
@@ -32,6 +33,7 @@ class Player extends Entity {
     this.attackBuffer = false
     // this.harvestProgress = 0;
     this.inventory = new Inventory({playerId: this.id});
+    this.selectedInventoryIndex = 0;
 
     GameObject.initPack.push(this.getInitPack())
   }
@@ -97,8 +99,11 @@ class Player extends Entity {
     }
     if(key === "attack" && !this.attackBuffer) {
       this.attackBuffer = true;
-      this.shootProj(this.angle)
+      this.shootProj(this.angle, 10)
     }
+    if(key === "useItem") {
+      this.useInventoryItem();
+    }    
   }
 
   onTakeDamage(damage, attacker) {
@@ -123,10 +128,34 @@ class Player extends Entity {
     this.sendInventoryPack();
   }
 
-  useInventoryItem(itemName) {
-    const item = Item.fromName(itemName);
+  selectInventorySlot(index) {
+    this.selectedInventoryIndex = index;
+  }
+
+  dropInventoryItem() {
+    const item = this.inventory.getItemAtIndex(this.selectedInventoryIndex)
+    if(item == null) {
+      return;
+    }
+    for(var i=0; i<item.amount; i++) {
+      new ItemTile({
+        x: this.x + Math.cos(Math.PI*this.angle/180)*100 + (Math.random()*120 - 60),
+        y: this.y + Math.sin(Math.PI*this.angle/180)*100 + (Math.random()*120 - 60),
+        item: item.item.name
+      })
+    }
+    this.removeInventoryItem(item.item, item.amount)
+  }
+
+  useInventoryItem() {
+    const item = this.inventory.getItemAtIndex(this.selectedInventoryIndex).item
+    if(item == null) {
+      return;
+    }
     if(item.structure) {
       this.socket.emit('placingStructure', item.name);
+    } else if(item.emitsProjectile) {
+      this.shootProj(this.angle, item.projectileDamage)
     } else {
       this.inventory.useItem(item)
       this.sendInventoryPack();
@@ -163,12 +192,13 @@ class Player extends Entity {
     }
   }
 
-  shootProj(angle) {
+  shootProj(angle, damage) {
     new Projectile({
       x: this.x,
       y: this.y,
       angle: angle,
       parent: this,
+      damage: damage,
 
     })
   }
@@ -275,8 +305,16 @@ class Player extends Entity {
     //   player.onSelectItem(itemName)
     // });
 
-    socket.on('inventoryUseItem', function(itemName) {
-      player.useInventoryItem(itemName)
+    socket.on('inventoryUseItem', function() {
+      player.useInventoryItem()
+    });
+
+    socket.on('inventorySelectItem', function(index) {
+      player.selectedInventoryIndex = index;
+    });
+
+    socket.on('inventoryDropItem', function(index) {
+      player.dropInventoryItem();
     });
 
     socket.on('inventoryCraftItem', function(recipe) {

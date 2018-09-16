@@ -1,12 +1,8 @@
-// const Tree = require('./resources/Tree');
-// const Rock = require('./resources/Rock');
-// const CopperOre = require('./resources/CopperOre');
-
 class Map {
   constructor() {
     this.tileSize = 62;
-    this.height = 80;
-    this.width = 80;
+    this.height = 100;
+    this.width = 100;
 
     this.tiles = [];
     for(var i = 0; i < this.height; i++) {

@@ -7,34 +7,45 @@ class Inventory {
     this.playerId = params.playerId;
     // this.craftingTiers = [false, false, false];
     // this.craftable = [];
-    this.items = [];
+    this.items =[null,null,null,null,null];
     // this.currentItem = null;
 
     // this.updateCrafting(this.craftingTiers);
   }
 
-  addItem(item, amount) {
-    if(this.hasItem(item, 1)) {
-      for(var i=0; i<this.items.length; i++) {
-        if(this.items[i].item.name === item.name) {
-          this.items[i].amount += amount;
-        }
+  isFull() {
+    for(var i=0; i<this.items.length; i++) {
+      if(this.items[i] == null) {
+        return false
       }
-    } else {
-      this.items.push({item:item, amount:amount});
+    }
+    return true;
+  }
+
+  addItem(item, amount) {
+    for(var i=0; i<this.items.length; i++) {
+      if(this.items[i]) {
+        if(this.items[i].item.name === item.name && this.items[i].amount <= 20-amount) {
+          this.items[i].amount += amount;
+          return;
+        }
+      } else {
+        this.items[i] = {item:item, amount:amount};
+        return;
+      }
     }
   }
   
   removeItem(item, amount) {
     if(this.hasItem(item, amount)) {
       for(var i=0; i<this.items.length; i++) {
+        if(this.items[i] === null) {
+          continue;
+        }
         if(this.items[i].item.name === item.name) {
           this.items[i].amount -= amount;
           if(this.items[i].amount === 0) {
-            if(this.currentItem === this.items[i].item.name) {
-              this.currentItem = null;
-            }
-            this.items.splice(i,1)
+            this.items[i] = null;
           }
         }
       }
@@ -43,6 +54,9 @@ class Inventory {
 
   hasItem(item, amount) {
     for(var i=0; i<this.items.length; i++) {
+      if(this.items[i] == null) {
+        continue;
+      }
       if(this.items[i].item.name === item.name && this.items[i].amount >= amount) {
         return true
       }
@@ -72,6 +86,10 @@ class Inventory {
       craftable.push(CraftingRecipe.list[i]);
     }
     return craftable;
+  }
+
+  getItemAtIndex(index) {
+    return this.items[index];
   }
 
   // itemFromName(itemName) {

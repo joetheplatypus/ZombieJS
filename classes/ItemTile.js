@@ -1,6 +1,5 @@
 const GameObject = require('./GameObject');
 const Item = require('./Item');
-const Player = require('./Player')
 
 class ItemTile extends GameObject {
   constructor(params) {
@@ -34,7 +33,7 @@ class ItemTile extends GameObject {
   }
 
   onCollision(collider) {
-    if(collider instanceof Player) {
+    if(collider.className == 'Player') {
       collider.addInventoryItem(this.item, 1)
       GameObject.remove(this)
     }

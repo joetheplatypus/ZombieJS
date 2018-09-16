@@ -13,6 +13,7 @@ class Projectile extends GameObject {
     this.className = 'Projectile'
     this.height = 20;
     this.width = 20;
+    this.damage = param.damage
 
     GameObject.initPack.push(this.getInitPack())
   }
@@ -27,27 +28,6 @@ class Projectile extends GameObject {
       this.timer++;
     }
     
-    //check position for whether to delete (hit wall)
-    // if(Map.isPositionWall({x:this.x,y:this.y})){
-		// 	self.toRemove = true;		
-		// }
-
-    //deal damage
-    
-
-    //particles
-    // if(this.type === "arrow") {
-    //   var p = new Particle({
-    //     x:this.x,
-    //     y:this.y,
-    //     spdX:-2+Math.random()*7,
-    //     spdY:-2+Math.random()*7,
-    //     maxTimer:12,
-    //     colour:"lightgrey",
-    //   });
-    // }
-
-    
   }
 
   onCollision(collider) {
@@ -55,7 +35,7 @@ class Projectile extends GameObject {
       return;
     }
     if(collider instanceof Entity) {
-      collider.onTakeDamage(10, this.parent);
+      collider.onTakeDamage(this.damage, this.parent);
     }
     if(collider instanceof RigidBody) {
       GameObject.remove(this)

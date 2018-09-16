@@ -3400,74 +3400,20 @@
     background-position: -153px -1707px;
 }
 
-.sprite-womanGreen_gun {
-    width: 52px;
-    height: 43px;
+.sprite-weapon_gun {
+    width: 19px;
+    height: 10px;
+    background-position: -1673px -79px;
+}
+
+.sprite-weapon_machine {
+    width: 33px;
+    height: 10px;
     background-position: -227px -1707px;
 }
 
-.sprite-womanGreen_hold {
-    width: 38px;
-    height: 43px;
-    background-position: -289px -1707px;
-}
-
-.sprite-womanGreen_machine {
-    width: 52px;
-    height: 43px;
-    background-position: -337px -1707px;
-}
-
-.sprite-womanGreen_reload {
-    width: 42px;
-    height: 43px;
-    background-position: -399px -1707px;
-}
-
-.sprite-womanGreen_silencer {
-    width: 57px;
-    height: 43px;
-    background-position: -451px -1707px;
-}
-
-.sprite-womanGreen_stand {
-    width: 36px;
-    height: 43px;
-    background-position: -518px -1707px;
-}
-
-.sprite-zoimbie1_gun {
-    width: 49px;
-    height: 43px;
-    background-position: -564px -1707px;
-}
-
-.sprite-zoimbie1_hold {
-    width: 35px;
-    height: 43px;
-    background-position: -623px -1707px;
-}
-
-.sprite-zoimbie1_machine {
-    width: 49px;
-    height: 43px;
-    background-position: -668px -1707px;
-}
-
-.sprite-zoimbie1_reload {
-    width: 39px;
-    height: 43px;
-    background-position: -727px -1707px;
-}
-
-.sprite-zoimbie1_silencer {
-    width: 54px;
-    height: 43px;
-    background-position: -776px -1707px;
-}
-
-.sprite-zoimbie1_stand {
-    width: 33px;
-    height: 43px;
-    background-position: -840px -1707px;
+.sprite-weapon_silencer {
+    width: 25px;
+    height: 10px;
+    background-position: -270px -1707px;
 }

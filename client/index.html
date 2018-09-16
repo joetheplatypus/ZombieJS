@@ -288,9 +288,12 @@
 		// Game.ctx.fillStyle = pattern;
 		// Game.ctx.fillRect(Game.absoluteToRelative({x:0,y:0}).x, Game.absoluteToRelative({x:0,y:0}).y, 8000, 8000);
 
-		for(var i = 0; i < 114; i++) {
-			for(var j = 0; j < 114; j++) {
-				const coords = Game.absoluteToRelative({x:j*62,y:i*62});
+		const leftTopTile = Game.coordToTile(Game.relativeToAbsolute({x:0,y:0}))
+		const bottomRightTile = Game.coordToTile(Game.relativeToAbsolute({x:Game.width,y:Game.height}))
+
+		for(var i = leftTopTile.x; i < bottomRightTile.x+1; i++) {
+			for(var j = leftTopTile.y; j < bottomRightTile.y+1; j++) {
+				const coords = Game.absoluteToRelative(Game.tileToCoords({x:i,y:j}))
   			Img.draw('dirt-1', coords.x, coords.y)
 			}
 		}
@@ -332,7 +335,19 @@
 		} else if(event.keyCode === 32) { //SPACEBAR
 			socket.emit('playerInput', {inputId:'space',state:true});
 		} else if(event.keyCode === 69) { //E
-			socket.emit('playerInput', {inputId:'use',state:true});
+			Inventory.onUseItem();
+		} else if(event.keyCode === 49) { //E
+			Inventory.onSelectItem(1);
+		} else if(event.keyCode === 50) { //E
+			Inventory.onSelectItem(2);
+		} else if(event.keyCode === 51) { //E
+			Inventory.onSelectItem(3);
+		} else if(event.keyCode === 52) { //E
+			Inventory.onSelectItem(4);
+		} else if(event.keyCode === 53) { //E
+			Inventory.onSelectItem(5);
+		} else if(event.keyCode === 81) { //E
+			Inventory.onDropItem();
 		}
 	}
 	
@@ -349,7 +364,7 @@
 			socket.emit('playerInput', {inputId:'space',state:false});
 		} else if(event.keyCode === 69) { //E
 			socket.emit('playerInput', {inputId:'use',state:false});
-		}
+		} 
 	}
 	
 	document.onmousedown = function(event) {

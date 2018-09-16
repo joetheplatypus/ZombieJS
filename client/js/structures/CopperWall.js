@@ -21,7 +21,8 @@ export default class CopperWall extends Structure {
     super.draw();
 
     const relPos = Game.absoluteToRelative({x:this.x,y:this.y});
-    Img.draw(`copper-wall${this.multiBlockInfo}`, relPos.x, relPos.y)
+    //Img.draw(`copper-wall${this.multiBlockInfo}`, relPos.x, relPos.y)
+    Img.draw(`copper-wall`, relPos.x, relPos.y)
   }
 
   

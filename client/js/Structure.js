@@ -21,10 +21,11 @@ export default class Structure extends Block{
 
   draw() {
 
+    const relPos = Game.absoluteToRelative({x:this.x,y:this.y});
     if(this.health !== this.maxHealth) {
       var hpWidth = 30 * this.health/this.maxHealth;
       Game.ctx.fillStyle = "red";
-      Game.ctx.fillRect(x - hpWidth/2, y - 50, hpWidth,4);
+      Game.ctx.fillRect(relPos.x - hpWidth/2, relPos.y - 50, hpWidth,4);
     }
     
     //minimap

@@ -4,6 +4,8 @@ class Item {
     this.damage = params.damage;
     this.event = params.event;
     this.structure = params.structure;
+    this.emitsProjectile = params.emitsProjectile;
+    this.projectileDamage = params.projectileDamage;
 
     Item.list.push(this)
   }
@@ -52,7 +54,13 @@ class Item {
       name: "copper-wall",
       damage: 0,
       structure: true
-    })  
+    }) 
+    new Item({
+      name: "gun",
+      damage: 0,
+      emitsProjectile: true,
+      projectileDamage: 50,
+    })
   }
   
 }

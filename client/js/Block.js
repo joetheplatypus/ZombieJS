@@ -42,8 +42,8 @@ class Block extends GameObject {
 }
 
 Block.map = []
-for(var i = 0; i < 80; i++) {
-  Block.map.push(new Array(80));
+for(var i = 0; i < 100; i++) {
+  Block.map.push(new Array(100));
 }
 
 export default Block;

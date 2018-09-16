@@ -3,8 +3,6 @@ import Game from './Helper.js'
 const Img = {};
 Img.spritesheet = new Image();
 Img.spritesheet.src = '/client/img/spritesheet.png'
-// Img.background = new Image();
-// Img.background.src = '/client/img/background.png'
 
 //must use icon- prefix for all icon images
 Img.map = new Map([[
@@ -246,6 +244,14 @@ Img.map = new Map([[
     srcY: 724,
     width: 64,
     height: 64,
+  }
+],[
+  'icon-gun',
+  {
+    srcX: 1673,
+    srcY: 79,
+    width: 19,
+    height: 10,
   }
 ]])
 
