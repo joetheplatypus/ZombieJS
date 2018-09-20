@@ -25,15 +25,19 @@ class Inventory {
   addItem(item, amount) {
     for(var i=0; i<this.items.length; i++) {
       if(this.items[i]) {
-        if(this.items[i].item.name === item.name && this.items[i].amount <= 20-amount) {
+        if(this.items[i].item.name === item.name) {
           this.items[i].amount += amount;
           return;
         }
-      } else {
+      }
+    }
+    for(var i=0; i<this.items.length; i++) {
+      if(!this.items[i]) {
         this.items[i] = {item:item, amount:amount};
         return;
       }
-    }
+    } 
+
   }
   
   removeItem(item, amount) {

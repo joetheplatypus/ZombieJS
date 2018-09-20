@@ -139,8 +139,8 @@ class Player extends Entity {
     }
     for(var i=0; i<item.amount; i++) {
       new ItemTile({
-        x: this.x + Math.cos(Math.PI*this.angle/180)*100 + (Math.random()*120 - 60),
-        y: this.y + Math.sin(Math.PI*this.angle/180)*100 + (Math.random()*120 - 60),
+        x: this.x + Math.cos(Math.PI*this.angle/180)*(100+Math.random()*100),
+        y: this.y + Math.sin(Math.PI*this.angle/180)*(100+Math.random()*100),
         item: item.item.name
       })
     }
@@ -148,10 +148,11 @@ class Player extends Entity {
   }
 
   useInventoryItem() {
-    const item = this.inventory.getItemAtIndex(this.selectedInventoryIndex).item
-    if(item == null) {
+    const itemInInv = this.inventory.getItemAtIndex(this.selectedInventoryIndex)
+    if(itemInInv == null) {
       return;
     }
+    const item = itemInInv.item;
     if(item.structure) {
       this.socket.emit('placingStructure', item.name);
     } else if(item.emitsProjectile) {
@@ -332,6 +333,8 @@ class Player extends Entity {
     //     box.inventory.removeItem(box.inventory.items[0].id,box.inventory.items[0].amount);
     //   }
     // });
+
+    socket.emit('mapSize', Map.getSize())
     
     socket.emit('selfId', socket.id);
 

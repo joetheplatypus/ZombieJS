@@ -1,13 +1,13 @@
 const Physics = require('./Physics');
-const Game = require('./Game')
+const Game = require('./Game');
 
 class GameObject {
   //REQUIRED
   //this.className
   constructor(params) {
     this.id = params.id || Math.random()
-    this.x = params.x || 4350;
-    this.y = params.y || 2600;
+    this.x = params.x;
+    this.y = params.y;
     this.velX = 0;
     this.velY = 0;
     this.width = 0;
@@ -20,6 +20,8 @@ class GameObject {
   update() {
     this.x += this.velX
     this.y += this.velY
+
+    
   }
   getUpdatePack() {
     return {
@@ -57,7 +59,7 @@ class GameObject {
       remove: GameObject.removePack,
       update: {
         data: GameObject.list.map(obj => obj.getUpdatePack()),
-        timeSent: new Date().getTime()
+        timeSent: new Date().getTime(),
       },
       timer: Game.getTimer()
     }

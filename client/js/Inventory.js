@@ -4,7 +4,7 @@ import DOM from './DOM.js'
 import Img from './Image.js'
 
 const Inventory =  {
-  items: [],
+  items: [null, null, null, null, null],
   crafting: [],
   selectedIndex: 0,
   update(pack) {
@@ -34,6 +34,27 @@ const Inventory =  {
 
     for(var i=0; i<this.items.length; i++) {
       if(this.items[i] == null) {
+        let div = document.createElement('div');
+        div.style.opacity = "0.6";
+        div.style.backgroundColor = 'grey';
+        div.style.width = '64px';
+        div.style.height = '64px';
+        div.style.display = 'flex'
+        div.style.alignItems = 'center'
+
+        if(i == this.selectedIndex) {
+          div.style.opacity = "1";
+        }
+
+        div.onmouseenter = function() {
+          Game.ctxInteract = false;
+          
+        }
+        div.onmouseleave = function() {
+          Game.ctxInteract = true;
+        }
+
+        DOM.inventory.appendChild(div)
         continue;
       }
       const item = this.items[i];

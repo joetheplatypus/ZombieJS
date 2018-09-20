@@ -17,6 +17,35 @@ class Block extends GameObject {
     }
     return false;
   }
+
+  static snapTileInMap(tile) {
+    const newTile = tile;
+    if(newTile.x <= 0) {
+      newTile.x = 0;
+    }
+    if(newTile.y <= 0) {
+      newTile.y = 0;
+    }
+    if(newTile.x >= Block.mapSize.width-1) {
+      newTile.x = Block.mapSize.width-1;
+    }
+    if(newTile.y >= Block.mapSize.height-1) {
+      newTile.y = Block.mapSize.height-1;
+    }
+    return newTile;
+  }
+
+  static initMap(size) {
+    for(var i = 0; i < size.height; i++) {
+      Block.map.push(new Array(size.width));
+    }
+    Block.mapSize.height = size.height;
+    Block.mapSize.width = size.width;
+  }
+
+  static getMapSize() {
+    return Block.mapSize;
+  }
   // getNeighbours() {
   //   const tile = Game.coordToTile({x:this.x,y:this.y})
   //   const neighbours = {
@@ -42,8 +71,6 @@ class Block extends GameObject {
 }
 
 Block.map = []
-for(var i = 0; i < 100; i++) {
-  Block.map.push(new Array(100));
-}
+Block.mapSize = {};
 
 export default Block;

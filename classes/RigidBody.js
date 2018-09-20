@@ -1,5 +1,6 @@
 const GameObject = require('./GameObject');
-const Physics = require('./Physics')
+const Physics = require('./Physics');
+const Map = require('./Map');
 
 class RigidBody extends GameObject {
   constructor(params) {
@@ -9,6 +10,10 @@ class RigidBody extends GameObject {
 
   update() {
     super.update();
+
+    const snapToMap = Map.snapCoordsInMap({x:this.x,y:this.y})
+    this.x = snapToMap.x;
+    this.y = snapToMap.y;
   }
 
   onRigidCollision(collider) {

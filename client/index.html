@@ -150,6 +150,7 @@
 		DOM.gameDiv.style.display = 'inline-block';
 		Game.inGame = true;
 		Game.inLobby = false;
+		Inventory.drawInventory();
 		requestAnimationFrame(loop)
 	});
 
@@ -163,8 +164,13 @@
 		Inventory.draw()
 	});
 
+
 	socket.on('placingStructure',function(structure) {
 		Game.placingStructure = structure;
+	});
+
+	socket.on('mapSize',function(data) {
+		Block.initMap(data)
 	});
 	
 	socket.on('init',function(data) {
@@ -199,7 +205,7 @@
 			if(classToFind.fromID(params.data[i].id)) {
 				classToFind.fromID(params.data[i].id).update(params.data[i])
 			}
-		}	
+		}
 	});
 	
 	socket.on('remove', function(data) {
@@ -255,12 +261,18 @@
 			const tile = Game.coordToTile(abscoords);
 			
 			const snappedabscoords = Game.snapCoordsToTile(abscoords);
-			const relcoords = Game.absoluteToRelative(snappedabscoords);
-			if(Block.tileOccupied(tile)) {
+			const snappedTile = Game.coordToTile(snappedabscoords);
+			const snappedInMapTile = Block.snapTileInMap(snappedTile)
+			const snappedInMapAbsCoords = Game.tileToCoords(snappedInMapTile)
+
+			const relcoords = Game.absoluteToRelative(snappedInMapAbsCoords);
+
+			if(Block.tileOccupied(snappedInMapTile)) {
 				Img.drawRed(Game.placingStructure, relcoords.x, relcoords.y);
 			} else {
 				Img.draw(Game.placingStructure, relcoords.x, relcoords.y);
-			}			
+				Game.placingStructureCoords = snappedInMapAbsCoords;
+			}
 		}
 
 		
@@ -293,8 +305,13 @@
 
 		for(var i = leftTopTile.x; i < bottomRightTile.x+1; i++) {
 			for(var j = leftTopTile.y; j < bottomRightTile.y+1; j++) {
-				const coords = Game.absoluteToRelative(Game.tileToCoords({x:i,y:j}))
-  			Img.draw('dirt-1', coords.x, coords.y)
+				if(i < 0 || j < 0 || i > Block.getMapSize().width-1 || j > Block.getMapSize().height-1) {
+					
+				} else {
+					const coords = Game.absoluteToRelative(Game.tileToCoords({x:i,y:j}))
+  				Img.draw('dirt-1', coords.x, coords.y)
+				}
+				
 			}
 		}
 		
@@ -369,7 +386,7 @@
 	
 	document.onmousedown = function(event) {
 		if(Game.placingStructure) {
-			socket.emit('placedStructure', {structureName:Game.placingStructure, x:Game.input.mouseRealX, y:Game.input.mouseRealY});
+			socket.emit('placedStructure', {structureName:Game.placingStructure, x:Game.placingStructureCoords.x, y:Game.placingStructureCoords.y});
 			Game.placingStructure = false;
 		} else if(Game.ctxInteract){
 			var x = -Game.width/2 + event.clientX - 8;
@@ -397,7 +414,7 @@
 		}
 	}
 	
-	
+
 	
 	
 </script>
