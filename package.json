@@ -1,0 +1,25 @@
+{
+  "name": "zombiejs",
+  "version": "1.0.0",
+  "description": "a nodejs game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joetheplatypus/ZombieJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joetheplatypus/ZombieJS/issues"
+  },
+  "homepage": "https://github.com/joetheplatypus/ZombieJS#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "node-particles": "^1.1.2",
+    "socket.io": "^2.1.1"
+  }
+}
