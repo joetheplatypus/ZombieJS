@@ -15,6 +15,7 @@ const Map = require('./classes/Map');
 const Game = require('./classes/Game');
 const Item = require('./classes/Item');
 const ItemTile = require('./classes/ItemTile');
+const AI = require('./classes/AI');
 
 const Settings = require('./settings')
 
@@ -97,6 +98,8 @@ for(var i=0; i < 10; i++) {
 	}
 }
 
+new Tree({x:200,y:200})
+
 new ItemTile({
 	x:1200,
 	y:1200,
@@ -125,9 +128,11 @@ setInterval(function() {
 			lobbyTimer = Game.getLobbyTimer();
 			if(lobbyTimer.finished) {
 				Game.inGame = true;
+				
 				for(var i=0; i<lobbyPlayers.length; i++) {
 					Player.onConnect(lobbyPlayers[i].socket,lobbyPlayers[i].username,lobbyPlayers[i].address)
 				}
+				const ai = new AI({x:100, y:100});
 			}
 		}
 		
