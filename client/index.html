@@ -298,9 +298,6 @@
 	
 	var drawMap = function() {
 
-		// var pattern = Game.ctx.createPattern(Img.background, 'repeat');
-		// Game.ctx.fillStyle = pattern;
-		// Game.ctx.fillRect(Game.absoluteToRelative({x:0,y:0}).x, Game.absoluteToRelative({x:0,y:0}).y, 8000, 8000);
 
 		const leftTopTile = Game.coordToTile(Game.relativeToAbsolute({x:0,y:0}))
 		const bottomRightTile = Game.coordToTile(Game.relativeToAbsolute({x:Game.width,y:Game.height}))
@@ -311,7 +308,9 @@
 					
 				} else {
 					const coords = Game.absoluteToRelative(Game.tileToCoords({x:i,y:j}))
-  				Img.draw('dirt-1', coords.x, coords.y)
+					Img.draw('dirt-1', coords.x, coords.y);
+					//Game.ctx.rect(coords.x,coords.y,62,62);
+					//Game.ctx.stroke()
 				}
 				
 			}

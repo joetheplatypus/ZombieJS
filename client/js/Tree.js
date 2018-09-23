@@ -7,6 +7,9 @@ export default class Tree extends Block {
     super(params)
     this.health = params.health;
     this.maxHealth = params.maxHealth;
+	const tile = Game.coordToTile({x:this.x,y:this.y});
+	this.tileX = tile.x;
+	this.tileY = tile.y;
     
     this.renderLayer = 3;
   }
@@ -15,6 +18,10 @@ export default class Tree extends Block {
     this.x = data.x;
     this.y = data.y;
     this.health = data.health;
+	
+	const tile = Game.coordToTile({x:this.x,y:this.y});
+	this.tileX = tile.x;
+	this.tileY = tile.y;
   }
 
   draw() {
@@ -22,7 +29,7 @@ export default class Tree extends Block {
     const x = relPos.x;
     const y = relPos.y;
 
-    Img.draw('tree', x, y)
+    Img.drawBlock('tree', this.tileX, this.tileY);
 
     var hpWidth = 30 * this.health/this.maxHealth;
     Game.ctx.fillStyle = "red";

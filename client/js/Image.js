@@ -266,6 +266,22 @@ Img.draw = function(imageName, x, y) {
     Game.ctx.drawImage(Img.spritesheet, image.srcX+1, image.srcY+1, image.width-2, image.height-2, x - (image.width-2)/2, y - (image.height-2)/2, image.width-2, image.height-2);
   }
 }
+Img.drawBlock = function(imageName, tileX, tileY) {
+  const image = Img.map.get(imageName);
+  if(!image) {
+    console.log(imageName)
+  }
+  console.log(tileX,tileY)
+  const TLcoords = Game.tileToCoords({x:tileX,y:tileY})
+  const absTLcoords = Game.absoluteToRelative(TLcoords);
+  console.log(TLcoords);
+  console.log(absTLcoords);
+  if(absTLcoords.x < 0-(image.width)/2 || absTLcoords.y < 0-(image.height)/2 || absTLcoords.x > Game.width+(image.width)/2 || absTLcoords.y > Game.height+(image.height)/2) {
+    //img not in viewport
+  } else {
+    Game.ctx.drawImage(Img.spritesheet, image.srcX+1, image.srcY+1, image.width-2, image.height-2, absTLcoords.x, absTLcoords.y, image.width-2, image.height-2);
+  }
+}
 Img.drawRed = function(imageName, x, y) {
   const image = Img.map.get(imageName);
   if(x < 0-(image.width)/2 || y < 0-(image.height)/2 || x > Game.width+(image.width)/2 || y > Game.height+(image.height)/2) {
