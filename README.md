@@ -1,2 +1,2 @@
 # ZombieJS
-A socket based node js game
+A socket based node js game!
