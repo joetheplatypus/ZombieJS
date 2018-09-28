@@ -275,6 +275,7 @@
 
 			if(Block.tileOccupied(snappedTile)) {
 				Img.drawRed(Game.placingStructure, relcoords.x, relcoords.y);
+				Game.placingStructureTile = null;
 			} else {
 				Img.draw(Game.placingStructure, relcoords.x, relcoords.y);
 				Game.placingStructureTile = snappedTile;
