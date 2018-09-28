@@ -15,34 +15,28 @@ class AI extends Entity {
 	
 	update() {
 		if(this.nextStep) {
-			console.log(this.getCurrentTile())
 			if(this.nextStep[0] == this.getCurrentTile().x && this.nextStep[1] == this.getCurrentTile().y) {
 				//snap into tile
-				const currentTileCoords = Map.tileToCoords(this.getCurrentTile());
-				if(this.getDistanceToPoint(currentTileCoords) > 0) {
-					const dx = currentTileCoords.x - this.x;
-					const dy = currentTileCoords.y - this.y;
-					if(dx > this.speed) {
-						this.velX = this.speed;
-					} else {
-						this.velX = dx
-					}
-					if(dy > this.speed) {
-						this.velY = this.speed;
-					} else {
-						this.velY = dy
-					}
-				} else {
-					this.velX = 0;
-					this.velY = 0;
-					this.updatePath();
-				}
-				
+				this.updatePath();	
 			} else {
-				const dx = this.nextStep[0] - this.getCurrentTile().x;
-				const dy = this.nextStep[1] - this.getCurrentTile().y;
-				this.velX = dx*this.speed;
-				this.velY = dy*this.speed;
+				const tileCoords = Map.tileToCoords({x:this.nextStep[0],y:this.nextStep[1]})
+				const destination = {x:tileCoords.x + Map.tileSize/2, y:tileCoords.y + Map.tileSize/2}
+				const dx = destination.x - this.x
+				const dy = destination.y - this.y
+				if(dx > this.speed) {
+					this.velX = this.speed
+				} else if (dx < -this.speed) {
+					this.velX = -this.speed
+				} else {
+					this.velX = dx
+				}
+				if(dy > this.speed) {
+					this.velY = this.speed
+				} else if (dy < -this.speed) {
+					this.velY = -this.speed
+				} else {
+					this.velY = dy
+				}
 			}
 		} else {
 			this.updatePath();
@@ -53,7 +47,7 @@ class AI extends Entity {
 	
 	updatePath() {
 		const nearestPlayer = Player.nearestToPoint({x:this.x,y:this.y});
-		if(this.getDistanceToPoint(nearestPlayer) > 600) {
+		if(this.getDistanceToPoint(nearestPlayer) > 600 || this.getDistanceToPoint(nearestPlayer) < 20) {
 			this.nextStep = null;
 			return;
 		}

@@ -98,6 +98,8 @@ for(var i=0; i < 10; i++) {
 	}
 }
 
+new Tree({tileX:3,tileY:0})
+
 new ItemTile({
 	x:1200,
 	y:1200,
@@ -130,7 +132,7 @@ setInterval(function() {
 				for(var i=0; i<lobbyPlayers.length; i++) {
 					Player.onConnect(lobbyPlayers[i].socket,lobbyPlayers[i].username,lobbyPlayers[i].address)
 				}
-				const ai = new AI({x:100, y:100});
+				const ai = new AI({x:50, y:50});
 			}
 		}
 		

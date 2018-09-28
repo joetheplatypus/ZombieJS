@@ -28,8 +28,8 @@ function findPath(world, pathStart, pathEnd)
 
 	// which heuristic should we use?
 	// default: no diagonals (Manhattan)
-	 var distanceFunction = ManhattanDistance;
-	 var findNeighbours = function(){}; // empty
+	//  var distanceFunction = ManhattanDistance;
+	//  var findNeighbours = function(){}; // empty
 
 	
 
@@ -44,8 +44,8 @@ function findPath(world, pathStart, pathEnd)
 	// var findNeighbours = DiagonalNeighboursFree;
 
 	// euclidean but no squeezing through cracks:
-	//var distanceFunction = EuclideanDistance;
-	//var findNeighbours = DiagonalNeighbours;
+	var distanceFunction = EuclideanDistance;
+	var findNeighbours = DiagonalNeighbours;
 
 	// euclidean and squeezing through cracks allowed:
 	// var distanceFunction = EuclideanDistance;
@@ -151,9 +151,9 @@ function findPath(world, pathStart, pathEnd)
 	// returns boolean value (world cell is available and open)
 	function canWalkHere(x, y)
 	{
-		return ((world[x] != null) &&
-			(world[x][y] != null) &&
-			(world[x][y] <= maxWalkableTileNum));
+		return ((world[y] != null) &&
+			(world[y][x] != null) &&
+			(world[y][x] <= maxWalkableTileNum));
 	};
 
 	// Node function, returns a new object with Node properties
