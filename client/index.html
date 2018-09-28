@@ -261,19 +261,23 @@
 			const coords = {x:x, y:y};
 			const abscoords = Game.relativeToAbsolute(coords);
 			const tile = Game.coordToTile(abscoords);
+			const snappedTile = Block.snapTileInMap(tile)
+			const tileCoords = Game.tileToCoords(snappedTile);
+			const tileCentre = {x:tileCoords.x + Game.tileSize/2, y:tileCoords.y + Game.tileSize/2}
 			
-			const snappedabscoords = Game.snapCoordsToTile(abscoords);
-			const snappedTile = Game.coordToTile(snappedabscoords);
-			const snappedInMapTile = Block.snapTileInMap(snappedTile)
-			const snappedInMapAbsCoords = Game.tileToCoords(snappedInMapTile)
+			// const snappedabscoords = Game.snapCoordsToTile(abscoords);
+			// const snappedTile = Game.coordToTile(snappedabscoords);
+			// const snappedInMapTile = Block.snapTileInMap(snappedTile)
+			// const snappedInMapAbsCoords = Game.tileToCoords(snappedInMapTile)
+			// const centreCoords = {x:snappedInMapAbsCoords.x + Game.tileSize/2, y:snappedInMapAbsCoords.y + Game.tileSize/2}
 
-			const relcoords = Game.absoluteToRelative(snappedInMapAbsCoords);
+			const relcoords = Game.absoluteToRelative(tileCentre);
 
-			if(Block.tileOccupied(snappedInMapTile)) {
+			if(Block.tileOccupied(snappedTile)) {
 				Img.drawRed(Game.placingStructure, relcoords.x, relcoords.y);
 			} else {
 				Img.draw(Game.placingStructure, relcoords.x, relcoords.y);
-				Game.placingStructureCoords = snappedInMapAbsCoords;
+				Game.placingStructureTile = snappedTile;
 			}
 		}
 
@@ -302,8 +306,8 @@
 		const leftTopTile = Game.coordToTile(Game.relativeToAbsolute({x:0,y:0}))
 		const bottomRightTile = Game.coordToTile(Game.relativeToAbsolute({x:Game.width,y:Game.height}))
 
-		for(var i = leftTopTile.x; i < bottomRightTile.x+1; i++) {
-			for(var j = leftTopTile.y; j < bottomRightTile.y+1; j++) {
+		for(var i = leftTopTile.x; i < bottomRightTile.x+2; i++) {
+			for(var j = leftTopTile.y; j < bottomRightTile.y+2; j++) {
 				if(i < 0 || j < 0 || i > Block.getMapSize().width-1 || j > Block.getMapSize().height-1) {
 					
 				} else {
@@ -387,7 +391,7 @@
 	
 	document.onmousedown = function(event) {
 		if(Game.placingStructure) {
-			socket.emit('placedStructure', {structureName:Game.placingStructure, x:Game.placingStructureCoords.x, y:Game.placingStructureCoords.y});
+			socket.emit('placedStructure', {structureName:Game.placingStructure, tileX:Game.placingStructureTile.x, tileY:Game.placingStructureTile.y});
 			Game.placingStructure = false;
 		} else if(Game.ctxInteract){
 			var x = -Game.width/2 + event.clientX - 8;

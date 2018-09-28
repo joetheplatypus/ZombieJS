@@ -271,11 +271,11 @@ Img.drawBlock = function(imageName, tileX, tileY) {
   if(!image) {
     console.log(imageName)
   }
-  console.log(tileX,tileY)
+  //console.log(tileX,tileY)
   const TLcoords = Game.tileToCoords({x:tileX,y:tileY})
   const absTLcoords = Game.absoluteToRelative(TLcoords);
-  console.log(TLcoords);
-  console.log(absTLcoords);
+  //console.log(TLcoords);
+  //console.log(absTLcoords);
   if(absTLcoords.x < 0-(image.width)/2 || absTLcoords.y < 0-(image.height)/2 || absTLcoords.x > Game.width+(image.width)/2 || absTLcoords.y > Game.height+(image.height)/2) {
     //img not in viewport
   } else {

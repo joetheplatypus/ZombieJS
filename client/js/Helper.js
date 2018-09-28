@@ -32,8 +32,8 @@ export default {
 	},
 	coordToTile(coords) {
     const tile = {}
-    tile.x = Math.round(coords.x / this.tileSize);
-    tile.y = Math.round(coords.y / this.tileSize);
+    tile.x = Math.floor(coords.x / this.tileSize);
+    tile.y = Math.floor(coords.y / this.tileSize);
     return tile;
   },
   tileToCoords(tile) {

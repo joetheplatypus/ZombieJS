@@ -87,18 +87,16 @@ for(var i=0; i < 10; i++) {
 	for(var j=0; j < 10; j++) {
 		const r = Math.random()
 		if(r > 0.8) {
-			new Tree({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+			new Tree({tileY:i*10 + Math.floor(Math.random()*9), tileX:j*10 + Math.floor(Math.random()*9)})
 		} else if(r > 0.6) {
-			new Rock({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+			new Rock({tileY:i*10 + Math.floor(Math.random()*9), tileX:j*10 + Math.floor(Math.random()*9)})
 		} else if(r > 0.4) {
-			new CopperOre({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+			new CopperOre({tileY:i*10 + Math.floor(Math.random()*9), tileX:j*10 + Math.floor(Math.random()*9)})
 		} else {
-			new Tree({y:i*600 + Math.random()*500, x:j*600 + Math.random()*500})
+			new Tree({tileY:i*10 + Math.floor(Math.random()*9), tileX:j*10 + Math.floor(Math.random()*9)})
 		}
 	}
 }
-
-new Tree({x:200,y:200})
 
 new ItemTile({
 	x:1200,

@@ -180,12 +180,12 @@ class Player extends Entity {
   placeStructure(data) {
     if(this.inventory.hasItem(Item.fromName(data.structureName), 1)) {
       const structureClass = StructureFactory.getClass(data.structureName);
-      if(Block.tileOccupied(Map.coordToTile({x:data.x,y:data.y}))) {
+      if(Block.tileOccupied({x:data.tileX,y:data.tileY})) {
         // tile already occupied
       } else {
         new structureClass({
-          x:data.x,
-          y:data.y,
+          tileX:data.tileX,
+          tileY:data.tileY,
           owner:this.id
         });
         this.removeInventoryItem(Item.fromName(data.structureName), 1);

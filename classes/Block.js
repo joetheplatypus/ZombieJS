@@ -4,9 +4,11 @@ const Map = require('./Map');
 class Block extends Entity {
   constructor(params) {
     super(params);
-    const coords = Map.snapCoordsToTile({x:this.x,y:this.y});
-    this.x = coords.x;
-    this.y = coords.y;
+    this.tileX = params.tileX;
+    this.tileY = params.tileY;
+    const coords = Map.tileToCoords({x:this.tileX,y:this.tileY});
+    this.x = coords.x + Map.tileSize/2;
+    this.y = coords.y + Map.tileSize/2;
     Map.addBlock(this)
   }
 
