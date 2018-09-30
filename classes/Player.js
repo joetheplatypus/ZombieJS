@@ -361,18 +361,18 @@ class Player extends Entity {
   }
   
   static nearestToPoint(point) {
-	let shortestDist = null;
-	let shortestDistPlayer = null;
-	for(var i=0; i<GameObject.list.length; i++) {
-      if(GameObject.list[i] instanceof Player) {
-        const dist = Math.sqrt(Math.pow(GameObject.list[i].x - point.x, 2) + Math.pow(GameObject.list[i].y - point.y, 2));
-		if (dist < shortestDist || shortestDist == null) {
-			shortestDist = dist;
-			shortestDistPlayer = GameObject.list[i]
-		}
+    let shortestDist = null;
+    let shortestDistPlayer = null;
+    for(var i=0; i<GameObject.list.length; i++) {
+        if(GameObject.list[i] instanceof Player) {
+          const dist = Math.sqrt(Math.pow(GameObject.list[i].x - point.x, 2) + Math.pow(GameObject.list[i].y - point.y, 2));
+      if (dist < shortestDist || shortestDist == null) {
+        shortestDist = dist;
+        shortestDistPlayer = GameObject.list[i]
       }
-    }
-	return shortestDistPlayer;
+        }
+      }
+    return shortestDistPlayer;
   }
 }
 

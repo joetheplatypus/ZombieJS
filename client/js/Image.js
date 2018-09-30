@@ -253,6 +253,14 @@ Img.map = new Map([[
     width: 19,
     height: 10,
   }
+],[
+  'zombie',
+  {
+    srcX: 1340,
+    srcY: 5,
+    width: 35,
+    height: 43,
+  }
 ]])
 
 Img.draw = function(imageName, x, y) {

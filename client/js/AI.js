@@ -13,9 +13,8 @@ export default class AI extends GameObject {
 
     this.health = params.health;
     this.maxHealth = params.maxHealth;
-    this.score = params.score;
     this.name = params.name;
-    //this.angle = params.angle;
+    this.angle = params.angle;
 
     this.renderLayer = 2;
   }
@@ -46,8 +45,9 @@ export default class AI extends GameObject {
      
     Game.ctx.save();
     Game.ctx.translate(x,y);
-    //Game.ctx.rotate(this.angle * Math.PI/180);
-    Img.drawRed('tree', 0, 0)
+    Game.ctx.rotate(this.angle);
+    console.log(this.angle)
+    Img.draw('zombie', 0, 0)
     Game.ctx.restore();
     
     //minimap
@@ -72,8 +72,7 @@ export default class AI extends GameObject {
     this.lastY = this.goalY;
     this.goalX = data.x;
     this.goalY = data.y;
-    this.health = data.health;
-    this.score = data.score;    
+    this.health = data.health; 
     this.angle = data.angle;
   }
   statUpdate() {

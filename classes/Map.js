@@ -89,6 +89,11 @@ class Map {
 	  this.numTiles[block.tileY][block.tileX] = 1;
   }
 
+  removeBlock(block) {
+    this.tiles[block.tileY][block.tileX] = null
+	  this.numTiles[block.tileY][block.tileX] = 0;
+  }
+
   getSize() {
     return {
       width:this.width,

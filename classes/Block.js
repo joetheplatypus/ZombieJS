@@ -12,6 +12,11 @@ class Block extends Entity {
     Map.addBlock(this)
   }
 
+  onDeath() {
+    Map.removeBlock(this);
+    super.onDeath();
+  }
+
   static tileOccupied(tile) {
     if(Map.tiles[tile.y][tile.x] instanceof Block) {
       return true;
