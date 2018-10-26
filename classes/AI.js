@@ -10,6 +10,8 @@ class AI extends Entity {
 		this.nextStep = null;
 		this.speed = 5;
 		this.angle = 0;
+		this.damage = 10;
+		this.attackTimer = 0;
 		this.nearestPlayer = null;
 		this.updatePath();
 		GameObject.initPack.push(this.getInitPack())
@@ -19,7 +21,8 @@ class AI extends Entity {
 		if(this.nextStep && this.getDistanceToPoint(this.nearestPlayer) > 50) {
 			if(this.nextStep[0] == this.getCurrentTile().x && this.nextStep[1] == this.getCurrentTile().y) {
 				//snap into tile
-				this.updatePath();	
+				this.updatePath();
+				
 			} else {
 				const tileCoords = Map.tileToCoords({x:this.nextStep[0],y:this.nextStep[1]})
 				const destination = {x:tileCoords.x + Map.tileSize/2, y:tileCoords.y + Map.tileSize/2}
@@ -55,6 +58,9 @@ class AI extends Entity {
 	
 	updatePath() {
 		this.nearestPlayer = Player.nearestToPoint({x:this.x,y:this.y});
+		if(this.getDistanceToPoint(this.nearestPlayer) < 100) {
+			this.attackPlayer();
+		}
 		if(this.getDistanceToPoint(this.nearestPlayer) > 600 || this.getDistanceToPoint(this.nearestPlayer) < 50) {
 			this.nextStep = null;
 			return;
@@ -70,6 +76,19 @@ class AI extends Entity {
 	
 	getCurrentTile() {
 		return Map.coordToTile({x:this.x,y:this.y});
+	}
+	
+	attackPlayer() {
+		if(this.attackTimer >= 20) {
+			this.nearestPlayer.onTakeDamage(this.damage, this);
+			this.attackTimer = 0;
+		} else {
+			this.attackTimer++;
+		}
+	}
+	
+	onKill() {
+		
 	}
 
 	getUpdatePack() {
